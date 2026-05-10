@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --midnight-teal: #1B3C48;
+    --light-green: #C4E892;
+    --light-green-transparent: rgba(196, 232, 146, 0.15);
+    --light-green-hover: #b3d97d;
+    --dark-text: #1B3C48;
+}
+
+body {
+    font-family: 'Inter', sans-serif !important;
+    background-color: #f4f6f9;
+}
+
+/* --- Dashboard Spacing & Header --- */
+.content-header {
+    padding-top: 30px !important; /* Give breadcrumbs more room */
+    padding-bottom: 20px !important;
+}
+
+.main-header {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    background-color: white !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+/* Search Bar Spacing */
+.navbar-nav .form-inline {
+    margin-right: 20px !important;
+}
+
+.navbar-nav .form-inline .input-group {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* --- Sidebar Styling --- */
+.main-sidebar {
+    background-color: var(--midnight-teal) !important;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.1) !important;
+}
+
+.brand-link {
+    background-color: var(--midnight-teal) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+    padding: 20px 15px !important;
+}
+
+.nav-sidebar .nav-link {
+    font-weight: 500 !important; /* Slightly bolder for readability */
+    margin-bottom: 5px;
+    border-radius: 8px !important;
+    margin-left: 10px;
+    margin-right: 10px;
+    color: #cbd5e1 !important;
+}
+
+/* Sidebar Active State - Semi-transparent */
+.nav-sidebar .nav-item > .nav-link.active {
+    background-color: var(--light-green-transparent) !important;
+    color: var(--light-green) !important;
+    font-weight: 700 !important;
+    border-left: 4px solid var(--light-green);
+}
+
+.nav-sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: white !important;
+}
+
+/* --- Buttons Consistency --- */
+.btn {
+    border-radius: 10px !important; /* Modern rounded corners */
+    border: none !important;
+    padding: 8px 16px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+}
+
+/* 'Add' Buttons (Success) */
+.btn-success, .btn-outline-success {
+    background-color: var(--light-green) !important;
+    color: var(--dark-text) !important;
+}
+
+.btn-success:hover {
+    background-color: var(--light-green-hover) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(196, 232, 146, 0.3) !important;
+}
+
+/* 'Change' Buttons (Info/Primary) */
+.btn-info, .btn-primary {
+    background-color: var(--midnight-teal) !important;
+    color: white !important;
+}
+
+.btn-info:hover, .btn-primary:hover {
+    background-color: #254d5c !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(27, 60, 72, 0.2) !important;
+}
+
+/* --- Login Page Refinements --- */
+.login-page {
+    background: linear-gradient(135deg, var(--midnight-teal) 0%, #0f242d 100%) !important;
+}
+
+/* Logo Scaling & Centering */
+.login-logo img {
+    max-height: 65px !important; /* Scaled to 60% of previous size */
+    width: auto !important;
+    margin-bottom: 30px !important;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-box .card {
+    border-radius: 24px !important;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5) !important; /* Subtle but popping shadow */
+    border: 1px solid rgba(255,255,255,0.1) !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+
