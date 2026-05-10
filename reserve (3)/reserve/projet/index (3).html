@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="./theme.js"></script>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hygeia | Personalized Nutrition & Calorie Tracking</title>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="stylesheet" href="./style (2).css">
+  </head>
+  <body>
+        <!-- Navbar_Public -->
+    <nav class="navbar" id="navbar">
+      <a href="index (3).html" class="nav-brand">Hygeia</a>
+      <div class="nav-links">
+        <a href="index (3).html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <button id="theme-toggle" class="btn btn-outline" style="border: none; font-size: 1.2rem; padding: 0.5rem;">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="auth.html" class="btn btn-primary">Sign In</a>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+      <!-- Background Image -->
+      <div class="hero-bg"></div>
+
+      <!-- Overlay -->
+      <div class="hero-overlay"></div>
+
+      <!-- Floating shapes -->
+      <div class="hero-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+      </div>
+
+      <!-- Content -->
+      <div class="container hero-content animate-fade">
+        <h1>Eat Smart . Live Better.</h1>
+        <p>
+          AI-powered nutrition tracking, personalized diet plans, and expert guidance —
+          everything you need to transform your health journey.
+        </p>
+        <a href="auth.html" class="btn btn-primary" style="font-size: 1.2rem; padding: 1rem 2.5rem;">
+          Get Started <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
+        </a>
+      </div>
+    </header>
+
+    <!-- Plans Section (Card Row style) -->
+    <section class="section" style="background-color: var(--color-bg-light);">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Standard Plans</h2>
+          <p>Choose a track to kickstart your wellness journey. Click to view free diet plans.</p>
+        </div>
+      </div>
+      
+      <div class="plans-grid">
+        <div class="plan-card" onclick="alert('Opening: Ramadan Plan details (Mocked)')">
+          <h3>Ramadan Plan</h3>
+          <p>Optimize your energy, stay hydrated, and maintain muscle mass during fasting hours with our specialized Suhoor and Iftar guidelines.</p>
+        </div>
+        <div class="plan-card" onclick="alert('Opening: Everyday Plan details (Mocked)')">
+          <h3>Everyday Plan</h3>
+          <p>A balanced approach to daily nutrition focusing on sustained energy, proper macronutrient distribution, and accessible whole foods.</p>
+        </div>
+        <div class="plan-card" onclick="alert('Opening: Weight Loss Reset Plan (Mocked)')">
+          <h3>Weight Loss Reset</h3>
+          <p>Kickstart your metabolism with AI-tracked calorie deficits and nutrient-dense meal structuring for healthy, sustainable weight loss.</p>
+        </div>
+        <div class="plan-card" onclick="alert('Opening: Hormonal Balance Plan (Mocked)')">
+          <h3>Hormonal Balance</h3>
+          <p>Specifically designed meal timing and ingredient choices that minimize insulin spikes and regulate cortisol for overall well-being.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Join Us Section -->
+    <section class="section" style="background-color: var(--color-white); padding: 6rem 5%;">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Why Join Us?</h2>
+          <p>The smartest set of tools and experts to manage your health.</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-box">
+            <div class="feature-icon"><i class="fas fa-camera"></i></div>
+            <h4>AI-Powered Tracking</h4>
+            <p>Simply snap a photo of your meal. Our advanced AI instantly detects portions and estimates calories.</p>
+          </div>
+          <div class="feature-box">
+            <div class="feature-icon"><i class="fas fa-user-md"></i></div>
+            <h4>Expert Nutritionists</h4>
+            <p>Connect with certified professionals via Zoom or phone to discuss your progress and refine your strategy.</p>
+          </div>
+          <div class="feature-box">
+            <div class="feature-icon"><i class="fas fa-clipboard-list"></i></div>
+            <h4>Personalized Plans</h4>
+            <p>No cookie-cutter diets. Receive plans based heavily on your goals, restrictions, and lifestyle.</p>
+          </div>
+          <div class="feature-box">
+            <div class="feature-icon"><i class="fas fa-users"></i></div>
+            <h4>Community Support</h4>
+            <p>Join a community of like-minded individuals. Share recipes, struggles, and celebrate wins together.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Chatbot UI Section -->
+    <section class="section" style="background-color: var(--color-bg-light);">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p>Got questions? Ask Hygeia AI instantly.</p>
+        </div>
+        <div class="faq-container">
+          <div class="chatbot-messages" id="chatbot-messages" style="height: 300px; overflow-y: auto; padding-right: 15px; margin-bottom: 2rem;">
+            <!-- Initial Message -->
+            <div class="chat-bubble bot">
+              Hello! This is Hygeia Support. You can ask me anything about our plans, AI tracking, or pricing. How can I help?
+            </div>
+          </div>
+          <div class="chatbot-input" style="display: flex; gap: 10px;">
+            <input type="text" id="chat-input" placeholder="Type your question..." style="flex-grow: 1; padding: 1rem; border-radius: 50px; border: 1px solid #ccc; font-family: var(--font-body); font-size: 1rem;">
+            <button id="chat-send" class="btn btn-primary" style="padding: 1rem; border-radius: 50%; width: 50px; height: 50px;"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-logo">Hygeia</div>
+            <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem;">Your AI-powered bridge to sustainable wellness.</p>
+            <div style="font-size: 1.5rem; display: flex; gap: 15px;">
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+            </div>
+          </div>
+          <div>
+            <h5>Quick Links</h5>
+            <ul class="footer-links">
+              <li><a href="about.html">About Us</a></li>
+              <li><a href="dashboard.html">Nutritionists</a></li>
+              <li><a href="index (3).html">Our Plans</a></li>
+              <li><a href="ai-tracker.html">AI Tracker</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5>Legal</h5>
+            <ul class="footer-links">
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5>Newsletter</h5>
+            <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem; font-size: 0.9rem;">Join for weekly nutrition tips and recipes.</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed!')">
+              <input type="email" placeholder="Email address" required>
+              <button type="submit"><i class="fas fa-envelope"></i></button>
+            </form>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Hygeia. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

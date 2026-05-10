@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="./theme.js"></script>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hygeia | AI Nutrition Scanner</title>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./style (2).css">
+    <style>
+      /* Mobile App Bottom Nav Styles */
+      .mobile-bottom-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(25, 68, 89, 0.95); backdrop-filter: blur(20px); z-index: 2000; border-top: 1px solid rgba(255,255,255,0.08); }
+      .mobile-nav-items { display: flex; justify-content: space-around; padding: 0.8rem 0; }
+      .mobile-nav-item { color: rgba(255,255,255,0.6); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.75rem; transition: var(--transition-fast); text-decoration: none;}
+      .mobile-nav-item.active, .mobile-nav-item:hover { color: var(--color-highlight); }
+      @media (max-width: 768px) { .mobile-bottom-nav { display: block; } body { padding-bottom: 70px; } }
+
+      /* Centered Container */
+      .tracker-container { max-width: 900px; margin: 0 auto; width: 100%; position: relative; }
+      .page-header { text-align: center; margin-bottom: 3.5rem; }
+      .page-header h1 { color: white; font-size: 3rem; font-weight: bold; margin-bottom: 12px; }
+      .page-header p { color: rgba(255,255,255,0.9); font-size: 1.25rem; max-width: 600px; margin: 0 auto; }
+      [data-theme="light"] .page-header h1 { color: #194459; }
+      [data-theme="light"] .page-header p { color: #4b5563; }
+      
+      /* White Glass Section 1 - How It Works */
+      .section-title { font-size: 1.8rem; color: white; margin-bottom: 2rem; text-align: center; font-weight: bold; letter-spacing: 0.5px; }
+      [data-theme="light"] .section-title { color: #194459; }
+      
+      .step-grid { display: flex; gap: 1.5rem; margin-bottom: 4.5rem; justify-content: center; flex-wrap: wrap; }
+      .step-card { flex: 1; min-width: 250px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius-lg); padding: 2.5rem 1.5rem; text-align: center; transition: transform 0.3s, background 0.3s; }
+      [data-theme="light"] .step-card { background: rgba(255,255,255,0.9); border-color: rgba(25,68,89,0.1); box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+      [data-theme="light"] .step-card:hover { background: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+      .step-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.1); }
+      .step-icon { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--theme-step-circle-color, #ffffff); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--theme-step-circle-color, #ffffff); margin: 0 auto 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.15); background: var(--theme-step-circle-bg, rgba(255,255,255,0.05)); transition: background 0.3s; }
+      [data-theme="light"] .step-card:hover .step-icon { background: #d1ede0; }
+      .step-card:hover .step-icon { background: rgba(255,255,255,0.2); }
+      .step-title { color: white; font-size: 1.3rem; font-weight: bold; margin-bottom: 12px; }
+      [data-theme="light"] .step-title { color: #194459; }
+      .step-desc { color: rgba(255,255,255,0.85); font-size: 1.05rem; line-height: 1.5; }
+      [data-theme="light"] .step-desc { color: #4b5563; }
+
+      /* The Main Tracker Box to prevent Layout Shifts */
+      .tracker-box { 
+        background: rgba(255,255,255,0.05); 
+        border: 2px dashed rgba(255,255,255,0.6); 
+        border-radius: var(--radius-lg); 
+        padding: 3rem; 
+        min-height: 480px; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .tracker-box:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.8); }
+      [data-theme="light"] .tracker-box { background: rgba(255,255,255,0.9); border-color: rgba(25,68,89,0.25); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+      [data-theme="light"] .tracker-box:hover { background: #ffffff; border-color: #85B599; box-shadow: 0 12px 35px rgba(133,181,153,0.15); }
+      
+      /* State 1: Upload Zone */
+      #state-1 { text-align: center; width: 100%; transition: opacity 0.3s; }
+      .btn-upload { background: white; color: #194459; padding: 1.2rem 3.5rem; border-radius: 30px; font-weight: bold; font-size: 1.25rem; border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.15); transition: transform 0.2s, box-shadow 0.2s; margin-bottom: 1.5rem; display: inline-flex; align-items: center; gap: 12px; }
+      .btn-upload:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+      .upload-subtitle { color: white; font-size: 1.2rem; font-weight: 500; }
+      [data-theme="light"] .upload-subtitle { color: #4b5563; }
+      [data-theme="light"] .btn-upload { background: #194459; color: white; }
+      
+      /* State 2: Scanning Animation */
+      #state-2 { display: none; width: 100%; text-align: center; }
+      .scan-image-wrapper { position: relative; width: 100%; max-width: 450px; margin: 0 auto 1.5rem; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 2px solid white; }
+      [data-theme="light"] .scan-image-wrapper { box-shadow: 0 10px 30px rgba(0,0,0,0.12); border-color: #85B599; }
+      .scan-image-wrapper img { width: 100%; display: block; object-fit: cover; max-height: 400px; }
+      /* Laser: vibrant emerald green in both modes — even more striking in Light Mode */
+      .laser-line { position: absolute; left: 0; top: 0; width: 100%; height: 4px; background: #10b981; box-shadow: 0 0 28px 10px rgba(16, 185, 129, 0.85); animation: scan-anim 1.5s infinite alternate ease-in-out; z-index: 5; }
+      @keyframes scan-anim { 0% { top: 0%; } 100% { top: calc(100% - 4px); } }
+      .processing-msg { color: white; font-size: 1.25rem; font-weight: bold; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 20px; }
+      [data-theme="light"] .processing-msg { color: #194459; }
+
+      /* State 3: Blurred Result & Paywall */
+      #state-3 { display: none; width: 100%; text-align: left; }
+      
+      .tracker-box.has-result { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.2); padding: 0; }
+      [data-theme="light"] .tracker-box.has-result { background: rgba(240,244,248,0.5); border-color: rgba(25,68,89,0.1); }
+
+      .result-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: var(--radius-lg); min-height: 480px; display: flex; align-items: center; justify-content: center; }
+      
+      .blurred-content { 
+        padding: 3rem; 
+        filter: blur(14px); 
+        background: rgba(255,255,255,0.05); 
+        pointer-events: none; 
+        user-select: none;
+        width: 100%;
+        height: 100%;
+      }
+      [data-theme="light"] .blurred-content { background: rgba(133,181,153,0.08); }
+      
+      .macro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 20px; text-align: center; margin-top: 2.5rem; }
+      .macro-card { background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; }
+      [data-theme="light"] .macro-card { background: rgba(255,255,255,0.9); border-color: rgba(25,68,89,0.1); }
+      .macro-card h4 { color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 8px; font-weight: 500; }
+      [data-theme="light"] .macro-card h4 { color: #4b5563; }
+      .macro-card .val { color: #85B599; font-size: 2.2rem; font-weight: bold; }
+
+      /* White Glass Paywall Modal */
+      .paywall-modal { 
+        position: absolute; 
+        top: 50%; 
+        left: 50%; 
+        transform: translate(-50%, -50%); 
+        background: rgba(255, 255, 255, 0.95); 
+        backdrop-filter: blur(25px); 
+        padding: 3.5rem 3rem; 
+        border-radius: var(--radius-lg); 
+        width: 90%; 
+        max-width: 500px; 
+        text-align: center; 
+        box-shadow: 0 20px 60px rgba(0,0,0,0.25); 
+        border: 1px solid #ffffff; 
+        z-index: 10;
+      }
+      .paywall-modal h2 { font-size: 2.2rem; color: #194459; font-weight: bold; margin-bottom: 18px; }
+      .paywall-modal p { font-size: 1.15rem; color: #4b5563; line-height: 1.6; margin-bottom: 25px; }
+      .paywall-price { font-size: 1.8rem; font-weight: bold; color: #85B599; margin-bottom: 30px; letter-spacing: 0.5px; }
+      .btn-unlock { background: #85B599; color: white; width: 100%; border: none; padding: 1.3rem; font-size: 1.25rem; font-weight: bold; border-radius: 30px; cursor: pointer; box-shadow: 0 6px 20px rgba(133,181,153,0.4); transition: transform 0.2s, box-shadow 0.2s; }
+      .btn-unlock:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(133,181,153,0.5); }
+    </style>
+    <script>
+      // Verify login state
+      if(!localStorage.getItem('isLoggedIn')){ window.location.href='auth.html'; }
+    </script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+      <a href="home.html" class="nav-brand">Hygeia</a>
+      <div class="nav-links">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="publications.html" class="nav-link">Publications</a>
+        <a href="ai-tracker.html" class="nav-link" style="color: var(--color-highlight);">AI Tracker</a>
+        <a href="appointments.html" class="nav-link">Appointments</a>
+        <button id="theme-toggle" class="btn btn-outline" style="border: none; font-size: 1.2rem; padding: 0.5rem;" aria-label="Toggle Dark Mode">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="profile.html" id="nav-profile-icon" style="margin-left:14px; color:var(--theme-text,white); display:flex; align-items:center; transition:all 0.2s;" title="My Profile" onmouseover="this.style.color='#85B599'" onmouseout="this.style.color=''">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+        <a href="#" onclick="logout(); return false;" id="nav-logout-icon" style="margin-left:10px; color:#ef4444; display:flex; align-items:center; transition:all 0.2s;" title="Logout" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#ef4444'">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="section" style="padding-top: 130px; min-height: 100vh;">
+        <div class="tracker-container animate-fade">
+          
+          <div class="page-header">
+            <h1>AI Nutrition Scanner</h1>
+            <p>Upload a photo of your meal and let our AI do the math.</p>
+          </div>
+
+          <!-- Section 1: The Explanation -->
+          <h2 class="section-title">Step-by-Step Guide</h2>
+          <div class="step-grid">
+            <div class="step-card">
+              <div class="step-icon"><i class="fas fa-camera"></i></div>
+              <h3 class="step-title">Step 1: Capture</h3>
+              <p class="step-desc">Take a clear photo of your meal directly from the app.</p>
+            </div>
+            <div class="step-card">
+              <div class="step-icon"><i class="fas fa-brain"></i></div>
+              <h3 class="step-title">Step 2: AI Analysis</h3>
+              <p class="step-desc">Our Neural Network identifies ingredients, portions, and nutritional density.</p>
+            </div>
+            <div class="step-card">
+              <div class="step-icon"><i class="fas fa-chart-pie"></i></div>
+              <h3 class="step-title">Step 3: Results</h3>
+              <p class="step-desc">Receive a detailed report with Calories, Macros (Carbs, Protein, Fats), and Health Score.</p>
+            </div>
+          </div>
+
+          <!-- Section 2: The Demo (Upload Area) -->
+          <h2 class="section-title" style="margin-bottom: 2.5rem;">Try the AI Scanner Now</h2>
+          <div class="tracker-box" id="tracker-box">
+            
+            <!-- State 1: Upload Zone -->
+            <div id="state-1">
+              <button class="btn-upload" onclick="document.getElementById('meal-input').click()">
+                <i class="fas fa-cloud-upload-alt" style="color: #85B599;"></i> Upload Image
+              </button>
+              <p class="upload-subtitle">Analyze your meal in seconds</p>
+              <input type="file" id="meal-input" accept="image/*" style="display: none;" onchange="startScanning(this)">
+            </div>
+
+            <!-- State 2: Scanning Animation -->
+            <div id="state-2">
+              <div class="scan-image-wrapper">
+                <img id="scan-preview" src="" alt="Scanning">
+                <div class="laser-line"></div>
+              </div>
+              <div class="processing-msg">
+                <i class="fas fa-cog fa-spin" style="color: #85B599;"></i> Extracting nutritional data...
+              </div>
+            </div>
+
+            <!-- State 3: Blurred Result & Paywall -->
+            <div id="state-3" class="result-wrapper">
+              
+              <!-- Background Blurred Content -->
+              <div class="blurred-content" id="analysis-grid">
+                <h3 style="color: white; font-size: 2rem; margin-bottom: 25px; text-align: center;"><i class="fas fa-check-circle" style="color: #85B599;"></i> Analysis Confirmed</h3>
+                
+                <div class="macro-grid">
+                  <div class="macro-card">
+                    <h4>Calories</h4>
+                    <div class="val">645</div>
+                  </div>
+                  <div class="macro-card">
+                    <h4>Protein</h4>
+                    <div class="val">42g</div>
+                  </div>
+                  <div class="macro-card">
+                    <h4>Carbs</h4>
+                    <div class="val">54g</div>
+                  </div>
+                  <div class="macro-card">
+                    <h4>Fats</h4>
+                    <div class="val">28g</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Foreground White Glass Modal -->
+              <div class="paywall-modal" id="paywall-ui">
+                <h2>Ready to see your results?</h2>
+                <p>To access this full nutritional breakdown and save it to your profile, upgrade to a Premium account.</p>
+                <div class="paywall-price">Only $2.00 / Month</div>
+                <button class="btn-unlock" onclick="window.location.href='subscription.html'">Unlock Analysis & Go Premium</button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="mobile-bottom-nav">
+      <div class="mobile-nav-items">
+        <a href="home.html" class="mobile-nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="publications.html" class="mobile-nav-item"><i class="far fa-newspaper"></i><span>Publications</span></a>
+        <a href="ai-tracker.html" class="mobile-nav-item active"><i class="fas fa-camera"></i><span>Tracker</span></a>
+        <a href="appointments.html" class="mobile-nav-item"><i class="far fa-calendar-alt"></i><span>Appointments</span></a>
+        <a href="profile.html" class="mobile-nav-item"><i class="far fa-user-circle"></i><span>Profile</span></a>
+      </div>
+    </nav>
+
+    <script src="app.js"></script>
+    <script>
+      function startScanning(input) {
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            
+            const trackerBox = document.getElementById('tracker-box');
+            const s1 = document.getElementById('state-1');
+            const s2 = document.getElementById('state-2');
+            const s3 = document.getElementById('state-3');
+            const scanImg = document.getElementById('scan-preview');
+            
+            // Render State 2 setup
+            s1.style.display = 'none';
+            scanImg.src = e.target.result;
+            s2.style.display = 'block';
+            
+            // Scan duration constraint
+            setTimeout(() => {
+              s2.style.display = 'none';
+              trackerBox.classList.add('has-result');
+              s3.style.display = 'block';
+              
+              // Validate clearance
+              if (localStorage.getItem('isPremium') === 'true') {
+                 document.getElementById('analysis-grid').style.filter = 'none';
+                 document.getElementById('analysis-grid').style.pointerEvents = 'auto';
+                 document.getElementById('paywall-ui').style.display = 'none';
+              }
+              
+            }, 3000);
+          }
+          reader.readAsDataURL(input.files[0]);
+          input.value = ''; // Clean buffer
+        }
+      }
+    </script>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

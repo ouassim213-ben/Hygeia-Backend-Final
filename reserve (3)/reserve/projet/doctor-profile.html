@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="./theme.js"></script>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hygeia | Doctor Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="stylesheet" href="./style (2).css">
+   <style>
+     .mobile-bottom-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(25, 68, 89, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 -4px 20px rgba(0,0,0,0.15); z-index: 2000; border-top: 1px solid rgba(255,255,255,0.08); }
+     .mobile-nav-items { display: flex; justify-content: space-around; padding: 0.8rem 0; }
+     .mobile-nav-item { color: rgba(255,255,255,0.6); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.75rem; transition: var(--transition-fast); }
+     .mobile-nav-item.active, .mobile-nav-item:hover { color: var(--color-highlight); }
+     @media (max-width: 768px) { .mobile-bottom-nav { display: block; } body { padding-bottom: 70px; } }
+
+     /* Flow Container Setup */
+     .flow-container > div { display: none; animation: fade-in-up 0.5s ease-out; }
+     .flow-container > div.active { display: block; }
+
+     /* Profile Split Layout */
+     .profile-split { display: grid; grid-template-columns: 1fr 400px; gap: 2rem; max-width: 1200px; margin: 0 auto; align-items: start; }
+     @media (max-width: 900px) { .profile-split { grid-template-columns: 1fr; } }
+     
+     /* Profile Specs */
+     .doc-header { display: flex; gap: 1.5rem; align-items: center; margin-bottom: 2rem; }
+     .doc-avatar { width: 150px; height: 150px; border-radius: 50%; background-size: cover; border: 4px solid var(--color-secondary); box-shadow: var(--shadow-lg); }
+     .review-badge { background: #ffffff; color: var(--color-primary); padding: 4px 8px; border-radius: 12px; font-size: 0.85rem; font-weight: bold; }
+
+     /* Weekly Schedule Grid */
+     .schedule-wrapper { margin-top: 15px; border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-md); padding: 1rem; background: rgba(0,0,0,0.1); }
+     .schedule-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: bold; color: var(--color-primary); }
+     .schedule-header a { color: var(--color-secondary); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; cursor: pointer; }
+     .schedule-header a:hover { color: var(--color-highlight); }
+     
+     .schedule-grid { display: flex; flex-direction: column; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
+     .schedule-row { display: flex; gap: 8px; align-items: center; min-width: max-content; }
+     .schedule-day-label { width: 130px; font-weight: bold; color: var(--color-text-dark); font-size: 0.9rem; flex-shrink: 0; }
+     .schedule-slot { padding: 8px 0; width: 70px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; text-align: center; cursor: pointer; transition: all 0.2s; }
+     
+     .schedule-slot.available { background: var(--color-secondary); color: white; box-shadow: var(--shadow-sm); border: 1px solid rgba(255,255,255,0.1); }
+     .schedule-slot.available:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(133,181,153,0.4); }
+     
+     .schedule-slot.empty { background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.2); border: 1px dashed rgba(255,255,255,0.1); cursor: not-allowed; }
+     
+     .schedule-slot.selected { background: #2D8CFF !important; border-color: #2D8CFF !important; color: white !important; box-shadow: 0 0 15px rgba(45, 140, 255, 0.4); transform: scale(1.05); }
+
+     .feedback-msg { margin-top: 15px; padding: 12px; background: rgba(45, 140, 255, 0.1); border-left: 4px solid #2D8CFF; color: var(--color-text-dark); font-size: 0.95rem; border-radius: 4px; display: none; animation: fade-in-up 0.3s; }
+
+
+     /* Payment Forms */
+     .checkout-box { max-width: 600px; margin: 0 auto; background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); padding: 3rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); }
+     .form-control { width: 100%; border: 1px solid rgba(25, 68, 89, 0.2); border-radius: var(--radius-sm); padding: 1rem; background: rgba(255,255,255,0.8); color: var(--color-primary); margin-bottom: 15px; font-family: var(--font-body); font-size: 1rem; transition: border-color 0.3s; }
+     body.dark-theme .form-control { background: rgba(25, 68, 89, 0.2); color: white; border-color: rgba(255,255,255,0.1); }
+     .form-control:focus { outline: none; border-color: var(--color-secondary); }
+
+     /* Success Invoice */
+     .success-box { max-width: 700px; margin: 0 auto; text-align: center; padding: 4rem 2rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); }
+     .zoom-link-box { background: rgba(45, 140, 255, 0.1); border: 2px solid #2D8CFF; border-radius: var(--radius-md); padding: 2rem; margin: 2rem 0; }
+   </style>
+  
+    <script>if(!localStorage.getItem('isPremium')){ window.location.href='auth.html'; }</script>
+  </head>
+  <body>
+    <!-- Navbar_Private -->
+        <nav class="navbar" id="navbar">
+      <a href="home.html" class="nav-brand">Hygeia</a>
+      <div class="nav-links">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="publications.html" class="nav-link">Publications</a>
+        <a href="ai-tracker.html" class="nav-link">AI Tracker</a>
+        <a href="appointments.html" class="nav-link" style="color: var(--color-highlight);">Appointments</a>
+        <button id="theme-toggle" class="btn btn-outline" style="border: none; font-size: 1.2rem; padding: 0.5rem;" aria-label="Toggle Dark Mode">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="profile.html" id="nav-profile-icon" style="margin-left:14px; color:var(--theme-text,white); display:flex; align-items:center; transition:all 0.2s;" title="My Profile" onmouseover="this.style.color='#85B599'" onmouseout="this.style.color=''">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+        <a href="#" onclick="logout(); return false;" id="nav-logout-icon" style="margin-left:10px; color:#ef4444; display:flex; align-items:center; transition:all 0.2s;" title="Logout" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#ef4444'">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="section" style="padding-top: 100px; background-color: var(--color-bg-light); min-height: 100vh;">
+        <div class="container p-0">
+          <button class="btn btn-outline" style="border: none; margin-bottom: 2rem; color: var(--color-text-muted);" onclick="window.location.href='appointments.html'"><i class="fas fa-arrow-left"></i> Back to practitioners</button>
+
+          <div class="flow-container" id="flow-container">
+            
+            <!-- STEP 1: Profile & Selection -->
+            <div id="view-profile" class="active">
+              <div class="profile-split">
+                <!-- Left: Bio & Details -->
+                <div>
+                  <div class="doc-header">
+                    <div class="doc-avatar" style="background-image: url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400');"></div>
+                    <div>
+                      <h1 style="color: var(--color-primary); font-size: 2rem; margin-bottom: 5px;">Dr. Sarah Jenkins</h1>
+                      <p style="color: var(--color-highlight); font-weight: bold; font-size: 1.1rem; margin-bottom: 10px;">Nutritionist Doctor</p>
+                      <div style="display: flex; gap: 15px; align-items: center;">
+                        <span class="review-badge"><i class="fas fa-star"></i> 4.9 (128 avis)</span>
+                        <span style="color: var(--color-text-muted); font-size: 0.9rem;"><i class="fas fa-award"></i> 12 years of experience</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="glass-card" style="padding: 2rem; margin-bottom: 2rem; border-radius: var(--radius-md);">
+                    <h3 style="color: var(--color-primary); margin-bottom: 1rem;">About</h3>
+                    <p style="color: var(--color-text-dark); line-height: 1.7; margin-bottom: 1.5rem;">Specialized in metabolic stress management and female hormonal balance. Dr. Jenkins supports you with a holistic scientific approach towards full vitality.</p>
+                    
+                    <h4 style="color: var(--color-primary); margin-bottom: 0.8rem;">Degrees & Certifications</h4>
+                    <ul style="color: var(--color-text-muted); padding-left: 20px; line-height: 1.6; font-size: 0.95rem;">
+                      <li>Doctorat en Médecine (Nutrition Structurée) - Sorbonne Paris</li>
+                      <li>Certification Microbiome Health & Gut Healing</li>
+                    </ul>
+                  </div>
+
+                  <!-- Avis -->
+                  <h3 style="color: var(--color-primary); margin-bottom: 1rem;">Recent Reviews</h3>
+                  <div style="background: rgba(255,255,255,0.03); border-left: 3px solid var(--color-secondary); padding: 1.2rem; margin-bottom: 1rem;">
+                    <div style="display: flex; gap: 5px; color: #ffffff; font-size: 0.8rem; margin-bottom: 5px;"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p style="font-size: 0.95rem; font-style: italic; color: var(--color-text-dark);">"Very attentive. I lost 5kg in 2 months with zero fatigue thanks to her protocol. The Zoom follow-ups are perfect."</p>
+                    <span style="font-size: 0.8rem; color: var(--color-text-muted);">- Marie L.</span>
+                  </div>
+                </div>
+
+                <!-- Right: Booking Widget -->
+                <div>
+                  <div class="cal-widget glass-card">
+                    <h3 style="color: var(--color-primary); margin-bottom: 15px; font-size: 1.3rem;">Book an Appointment</h3>
+                    
+                    <div style="background: rgba(45, 140, 255, 0.1); border: 1px solid #2D8CFF; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                      <div style="display: flex; align-items: flex-start; gap: 15px;">
+                        <div style="background: #2D8CFF; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;"><i class="fas fa-video"></i></div>
+                        <div>
+                          <h4 style="color: var(--color-primary); font-size: 1rem; margin-bottom: 3px;">Video consultation via Zoom</h4>
+                          <p style="color: var(--color-text-muted); font-size: 0.85rem;">Duration: 45 min</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="schedule-wrapper">
+                      <div class="schedule-header">
+                        <a href="#"><i class="fas fa-chevron-left"></i> Previous Week</a>
+                        <span>April 2026</span>
+                        <a href="#">Next Week <i class="fas fa-chevron-right"></i></a>
+                      </div>
+
+                      <div class="schedule-grid">
+                        
+                        <!-- Lundi -->
+                        <div class="schedule-row">
+                          <div class="schedule-day-label">Mon 06.04</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Monday April 06', '11h00')">11:00</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Monday April 06', '14h30')">14:30</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Monday April 06', '16h00')">16:00</div>
+                        </div>
+
+                        <!-- Mardi -->
+                        <div class="schedule-row">
+                          <div class="schedule-day-label">Tue 07.04</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Tuesday April 07', '10h00')">10:00</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Tuesday April 07', '10h30')">10:30</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Tuesday April 07', '14h00')">14:00</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Tuesday April 07', '16h30')">16:30</div>
+                        </div>
+
+                        <!-- Mercredi -->
+                        <div class="schedule-row">
+                          <div class="schedule-day-label">Wed 08.04</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Wednesday April 08', '11h30')">11:30</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Wednesday April 08', '14h30')">14:30</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Wednesday April 08', '15h00')">15:00</div>
+                          <div class="schedule-slot empty">-</div>
+                        </div>
+
+                        <!-- Jeudi -->
+                        <div class="schedule-row">
+                          <div class="schedule-day-label">Thu 09.04</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Thursday April 09', '10h00')">10:00</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Thursday April 09', '11h00')">11:00</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Thursday April 09', '11h30')">11:30</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Thursday April 09', '16h00')">16:00</div>
+                        </div>
+                        
+                        <!-- Vendredi -->
+                        <div class="schedule-row">
+                          <div class="schedule-day-label">Fri 10.04</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Friday April 10', '10h30')">10:30</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Friday April 10', '11h00')">11:00</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot available" onclick="selectSlot(this, 'Friday April 10', '14h30')">14:30</div>
+                          <div class="schedule-slot empty">-</div>
+                          <div class="schedule-slot empty">-</div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div id="slot-feedback" class="feedback-msg">
+                      <!-- Selected time will be injected here via JS -->
+                    </div>
+
+                    <button id="book-btn" class="btn btn-primary" style="width: 100%; padding: 1.2rem; margin-top: 1.5rem; border-radius: 30px; font-weight: bold; background: linear-gradient(135deg, var(--color-secondary), var(--color-highlight)); opacity: 0.5; cursor: not-allowed;" onclick="if(!this.disabled){goToFlow('view-checkout')}" disabled>
+                      Proceed to payment (20€) <i class="fas fa-lock" style="margin-left: 8px;"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- STEP 2: Checkout -->
+            <div id="view-checkout">
+              <div class="checkout-box">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                  <i class="fas fa-shield-check" style="font-size: 3rem; color: var(--color-secondary); margin-bottom: 1rem;"></i>
+                  <h2 style="font-size: 2rem; color: var(--color-primary); margin-bottom: 0.5rem;">Paiement Secure & Anonymous</h2>
+                  <p style="color: var(--color-text-muted);">Confirm your consultation with Dr. Jenkins</p>
+                </div>
+
+                <div style="background: rgba(133,181,153,0.1); border-left: 4px solid var(--color-secondary); padding: 1.5rem; margin-bottom: 2rem; border-radius: 4px;">
+                  <h4 style="color: var(--color-primary); margin-bottom: 5px;">Order Details</h4>
+                  <p style="color: var(--color-text-dark); font-size: 0.95rem;">Video Consultation - 45 min</p>
+                  <p style="color: var(--color-secondary); font-weight: bold; font-size: 1.5rem; margin-top: 10px;">20.00 €</p>
+                </div>
+
+                <form onsubmit="event.preventDefault(); processCheckout();">
+                  <div style="position: relative;">
+                    <i class="fas fa-user" style="position: absolute; top: 18px; left: 15px; color: var(--color-text-muted);"></i>
+                    <input type="text" class="form-control" style="padding-left: 45px;" placeholder="Name on card" required>
+                  </div>
+                  <div style="position: relative;">
+                    <i class="fas fa-credit-card" style="position: absolute; top: 18px; left: 15px; color: var(--color-text-muted);"></i>
+                    <i class="fab fa-cc-mastercard" style="position: absolute; top: 15px; right: 15px; font-size: 1.4rem; color: var(--color-text-muted);"></i>
+                    <input type="text" class="form-control" style="padding-left: 45px;" placeholder="Card number (0000 0000 ...)" required>
+                  </div>
+                  <div style="display: flex; gap: 15px;">
+                    <input type="text" class="form-control" placeholder="MM/AA" required>
+                    <input type="text" class="form-control" placeholder="CVC" required>
+                  </div>
+
+                  <button id="commit-pay-btn" type="submit" class="btn btn-primary" style="width: 100%; padding: 1.2rem; margin-top: 1rem; border-radius: 30px; font-weight: bold; background: linear-gradient(135deg, var(--color-primary), var(--color-accent)); font-size: 1.1rem; border: none; box-shadow: 0 10px 20px rgba(25, 68, 89, 0.3);">
+                    Confirm payment
+                  </button>
+                  <p style="text-align: center; color: var(--color-text-muted); font-size: 0.8rem; margin-top: 15px;"><i class="fas fa-lock"></i> Payment encrypted by Stripe. Your data is protected.</p>
+                </form>
+              </div>
+            </div>
+
+            <!-- STEP 3: Success Confirmation -->
+            <div id="view-success">
+               <div class="success-box glass-card">
+                 <div style="width: 100px; height: 100px; background: rgba(133,181,153,0.1); border-radius: 50%; border: 3px solid var(--color-secondary); display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 2rem; color: var(--color-secondary);">
+                   <i class="fas fa-check"></i>
+                 </div>
+                 
+                 <h1 style="color: var(--color-primary); margin-bottom: 1rem; font-size: 2.2rem;">Appointment Confirmed!</h1>
+                 <p style="color: var(--color-text-dark); font-size: 1.1rem; max-width: 500px; margin: 0 auto;">Your 20.00€ payment has been successfully received. You are officially scheduled for your consultation with <strong style="color: var(--color-highlight);">Dr. Sarah Jenkins</strong>.</p>
+
+                 <div class="zoom-link-box">
+                    <h3 style="color: #2D8CFF; margin-bottom: 15px; font-size: 1.2rem;">Official Zoom Link <i class="fas fa-link"></i></h3>
+                    <a href="#" style="background: rgba(255,255,255,0.8); display: inline-block; padding: 15px 30px; border-radius: 30px; color: var(--color-primary); font-weight: bold; font-family: monospace; font-size: 1.2rem; text-decoration: none; border: 1px solid #2D8CFF; box-shadow: var(--shadow-md);">https://zoom.us/j/hygeia-829148</a>
+                    <div style="display: flex; gap: 30px; justify-content: center; margin-top: 25px; color: #2D8CFF; font-size: 1.8rem;">
+                      <i class="fas fa-video"></i>
+                      <i class="fas fa-microphone"></i>
+                      <i class="fas fa-desktop"></i>
+                    </div>
+                 </div>
+
+                 <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                   <button class="btn btn-primary" style="padding: 1rem 2rem; border-radius: 30px;" onclick="window.location.href='dashboard.html'"><i class="far fa-calendar-check" style="margin-right: 8px;"></i> Add to calendar</button>
+                   <button class="btn btn-outline" style="padding: 1rem 2rem; border-radius: 30px; border-color: var(--color-secondary); color: var(--color-primary);" onclick="downloadInvoice(this)"><i class="fas fa-file-invoice-dollar" style="margin-right: 8px;"></i> Download Invoice</button>
+                 </div>
+               </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div><div class="footer-logo">Hygeia</div></div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="mobile-bottom-nav">
+      <div class="mobile-nav-items">
+        <a href="dashboard.html" class="mobile-nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="ai-tracker.html" class="mobile-nav-item"><i class="fas fa-camera"></i><span>Tracker</span></a>
+        <a href="appointments.html" class="mobile-nav-item active"><i class="far fa-calendar-alt"></i><span>Calendar</span></a>
+        <a href="profile.html" class="mobile-nav-item"><i class="far fa-user-circle"></i><span>Profile</span></a>
+      </div>
+    </nav>
+
+    <script src="app.js"></script>
+    <script>
+      function goToFlow(viewId) {
+        document.querySelectorAll('.flow-container > div').forEach(d => d.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function selectSlot(el, dayText, timeText) {
+        if(el.classList.contains('empty')) return;
+        
+        // Remove previous selected
+        document.querySelectorAll('.schedule-slot').forEach(s => s.classList.remove('selected'));
+        // Select new
+        el.classList.add('selected');
+        
+        // Feedback msg
+        const feedback = document.getElementById('slot-feedback');
+        feedback.innerHTML = `<i class="fas fa-info-circle"></i> You selected <strong style="color: #2D8CFF;">${dayText}</strong> à <strong style="color: #2D8CFF;">${timeText}</strong>`;
+        feedback.style.display = 'block';
+        
+        // Enable Book Button
+        const btn = document.getElementById('book-btn');
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
+      }
+
+      function processCheckout() {
+        const btn = document.getElementById('commit-pay-btn');
+        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Processing card...';
+        btn.style.opacity = '0.9';
+        
+        setTimeout(() => {
+          btn.innerHTML = '<i class="fas fa-check"></i> Payment successful';
+          btn.style.background = 'var(--color-secondary)';
+          setTimeout(() => {
+            goToFlow('view-success');
+          }, 800);
+        }, 2000);
+      }
+
+      function downloadInvoice(btn) {
+        const text = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+        setTimeout(() => {
+          btn.innerHTML = '<i class="fas fa-download"></i> Invoice_HYG249.pdf';
+          btn.style.background = 'rgba(133,181,153,0.1)';
+        }, 1500);
+      }
+    </script>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

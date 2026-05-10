@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="./theme.js"></script>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hygeia | Home</title>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="stylesheet" href="./style (2).css">
+   <style>
+     /* Hero Title — standalone, no flex stacking */
+     .hero-title {
+       font-size: clamp(2rem, 5vw, 3.5rem);
+       font-weight: 800;
+       line-height: 1.25;
+       letter-spacing: -0.5px;
+       color: white;
+       margin-bottom: 20px;
+       text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+       text-align: center;
+     }
+     [data-theme="light"] .hero-title { color: #194459; text-shadow: none; }
+     .hero-title span { color: #85B599; }
+     .hero-subtitle {
+       color: rgba(255,255,255,0.9);
+       font-size: 1.2rem;
+       max-width: 680px;
+       margin: 0 auto;
+       line-height: 1.7;
+       text-align: center;
+     }
+     [data-theme="light"] .hero-subtitle { color: #4b5563; }
+
+     /* Nutrika-style 6-block Grid */
+     .grid-services { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3.5rem; max-width: 1100px; margin-left: auto; margin-right: auto;}
+     .service-card { padding: 2.5rem 2rem; text-align: center; border-radius: var(--radius-lg); background: rgba(255,255,255,0.04); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.12); transition: all 0.3s; cursor: default; }
+     [data-theme="light"] .service-card { background: rgba(255,255,255,0.92); border-color: rgba(25,68,89,0.08); box-shadow: 0 4px 18px rgba(0,0,0,0.05); }
+     .service-card:hover { transform: translateY(-5px); border-color: rgba(133,181,153,0.4); box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important; background: rgba(255,255,255,0.07); }
+     [data-theme="light"] .service-card:hover { background: #ffffff; box-shadow: 0 12px 30px rgba(133,181,153,0.15) !important; border-color: rgba(133,181,153,0.3); }
+     .icon-circle { width: 70px; height: 70px; border-radius: 50%; background: rgba(133,181,153,0.15); color: var(--color-secondary); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 1.5rem; border: 2px solid var(--color-secondary); box-shadow: var(--shadow-sm); transition: transform 0.3s ease; }
+     .service-card:hover .icon-circle { transform: scale(1.1); background: var(--color-secondary); color: white; }
+     .service-card h3 { color: white; margin-bottom: 12px; font-size: 1.3rem; }
+     [data-theme="light"] .service-card h3 { color: #194459; }
+     .service-card p { color: rgba(255,255,255,0.75); font-size: 1rem; }
+     [data-theme="light"] .service-card p { color: #6b7280; }
+   </style>
+   <script>if(!localStorage.getItem('isPremium')){ window.location.href='auth.html'; }</script>
+  </head>
+  <body>
+    <!-- Main Top Navbar -->
+    <nav class="navbar" id="navbar">
+      <a href="home.html" class="nav-brand">Hygeia</a>
+      <div class="nav-links">
+        <a href="home.html" class="nav-link" style="color: var(--color-highlight);">Home</a>
+        <a href="publications.html" class="nav-link">Publications</a>
+        <a href="ai-tracker.html" class="nav-link">AI Tracker</a>
+        <a href="appointments.html" class="nav-link">Appointments</a>
+        <button id="theme-toggle" class="btn btn-outline" style="border: none; font-size: 1.2rem; padding: 0.5rem;" aria-label="Toggle Dark Mode">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="profile.html" id="nav-profile-icon" style="margin-left:14px; color:var(--theme-text,white); display:flex; align-items:center; transition:all 0.2s;" title="My Profile" onmouseover="this.style.color='#85B599'" onmouseout="this.style.color=''">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+        <a href="#" onclick="logout(); return false;" id="nav-logout-icon" style="margin-left:10px; color:#ef4444; display:flex; align-items:center; transition:all 0.2s;" title="Logout" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#ef4444'">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="section" style="padding-top: 130px; background-color: var(--color-bg-light); min-height: 100vh;">
+        <div class="container animate-fade">
+          
+          <!-- Hero Section -->
+          <div style="text-align: center; margin-bottom: 3rem; padding-top: 1rem;">
+            <h1 class="hero-title">Welcome to your space <span>HYGEIA</span></h1>
+            <p class="hero-subtitle">Your complete hub for optimal connected health. Explore the services available to you.</p>
+          </div>
+          
+          <div class="grid-services">
+            <!-- Block 1 -->
+            <div class="service-card">
+              <div class="icon-circle"><i class="far fa-clock"></i></div>
+              <h3>Whenever you want</h3>
+              <p>24/7 Availability on PC, tablet, and mobile.</p>
+            </div>
+            
+            <!-- Block 2 -->
+            <div class="service-card">
+              <div class="icon-circle"><i class="fas fa-laptop-house"></i></div>
+              <h3>Wherever you are</h3>
+              <p>High-quality Zoom consultations from the comfort of your couch.</p>
+            </div>
+
+            <!-- Block 3 -->
+            <div class="service-card">
+              <div class="icon-circle"><i class="fas fa-shield-alt"></i></div>
+              <h3>Secure &amp; Anonymous</h3>
+              <p>Encrypted Stripe payments and guaranteed patient anonymity.</p>
+            </div>
+
+            <!-- Block 4 -->
+            <div class="service-card">
+              <div class="icon-circle"><i class="fas fa-bolt"></i></div>
+              <h3>Easy to use</h3>
+              <p>A smooth, responsive, and modern interface.</p>
+            </div>
+
+            <!-- Block 5 -->
+            <div class="service-card">
+              <div class="icon-circle"><i class="fas fa-award"></i></div>
+              <h3>Quality Guaranteed</h3>
+              <p>All our practitioners are strictly certified by HYGEIA.</p>
+            </div>
+
+            <!-- Block 6 -->
+            <div class="service-card">
+              <div class="icon-circle"><i class="far fa-newspaper"></i></div>
+              <h3>Premium Insights</h3>
+              <p>Exclusive daily articles and health tips.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="mobile-bottom-nav">
+      <div class="mobile-nav-items">
+        <a href="home.html" class="mobile-nav-item active"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="publications.html" class="mobile-nav-item"><i class="far fa-newspaper"></i><span>Publications</span></a>
+        <a href="appointments.html" class="mobile-nav-item"><i class="far fa-calendar-alt"></i><span>Appointments</span></a>
+        <a href="profile.html" class="mobile-nav-item"><i class="far fa-user-circle"></i><span>Profile</span></a>
+      </div>
+    </nav>
+
+    <script src="app.js"></script>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

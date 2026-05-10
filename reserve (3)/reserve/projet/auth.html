@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="./theme.js"></script>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Sign up or log in to Hygeia." />
+    <title>Hygeia | Authentication</title>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="stylesheet" href="./style (2).css">
+  </head>
+  <body>
+            <!-- Navbar_Public -->
+    <nav class="navbar" id="navbar">
+      <a href="index (3).html" class="nav-brand">Hygeia</a>
+      <div class="nav-links">
+        <a href="index (3).html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <button id="theme-toggle" class="btn btn-outline" style="border: none; font-size: 1.2rem; padding: 0.5rem;">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="auth.html" class="btn btn-primary">Sign In</a>
+      </div>
+    </nav>
+
+
+<main>
+      <section class="auth-wrapper" style="padding-top: 120px;">
+        <div class="auth-box glass-card animate-fade">
+          <h2 class="section-title" style="text-align: center; margin-bottom: 1rem; font-size: var(--text-3xl);">Welcome Back</h2>
+          <p style="text-align: center; margin-bottom: 2rem; color: var(--color-text-muted);">Sign in to your Hygeia account to track your progress.</p>
+          <form onsubmit="event.preventDefault(); localStorage.setItem('isLoggedIn', 'true'); window.location.href='subscription.html';">
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" class="form-control" required placeholder="you@example.com">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" class="form-control" required placeholder="••••••••">
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--color-text-muted); cursor: pointer;">
+                <input type="checkbox"> Remember me
+              </label>
+              <a href="#" style="color: var(--color-primary); font-size: 0.9rem; font-weight: 500;">Forgot Password?</a>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In <i class="fas fa-sign-in-alt" style="margin-left: 8px;"></i></button>
+            <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: var(--color-text-muted);">
+              Don't have an account? <a href="#" style="color: var(--color-highlight); font-weight: 600;">Sign Up</a>
+            </p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-logo">Hygeia</div>
+            <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem;">Your AI-powered bridge to sustainable wellness.</p>
+            <div style="font-size: 1.5rem; display: flex; gap: 15px;">
+              <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+              <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+              <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+            </div>
+          </div>
+          <nav aria-label="Footer Quick Links">
+            <h5>Quick Links</h5>
+            <ul class="footer-links">
+              <li><a href="about.html">About Us</a></li>
+              <li><a href="home.html">Nutritionists</a></li>
+              <li><a href="index (3).html">Our Plans</a></li>
+              <li><a href="ai-tracker.html">AI Tracker</a></li>
+            </ul>
+          </nav>
+          <nav aria-label="Footer Legal Links">
+            <h5>Legal</h5>
+            <ul class="footer-links">
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+            </ul>
+          </nav>
+          <div>
+            <h5>Newsletter</h5>
+            <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem; font-size: 0.9rem;">Join for weekly nutrition tips and recipes.</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed!')" aria-label="Subscribe to newsletter">
+              <input type="email" aria-label="Email address for newsletter" placeholder="Email address" required>
+              <button type="submit" aria-label="Subscribe"><i class="fas fa-envelope" aria-hidden="true"></i></button>
+            </form>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Hygeia. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="./theme.js"></script>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hygeia | Premium Subscription</title>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="stylesheet" href="./style (2).css">
+   <style>
+     .benefit-row { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 1.5rem; text-align: left; }
+     .benefit-icon { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05)); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 1.2rem; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.3); }
+     .benefit-text h4 { color: var(--color-primary); font-size: 1.1rem; margin-bottom: 4px; }
+     .benefit-text p { color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.4; }
+   </style>
+  </head>
+  <body>
+    <!-- Navbar_Public -->
+    <nav class="navbar" id="navbar">
+      <a href="index (3).html" class="nav-brand">Hygeia</a>
+      <div class="nav-links">
+        <a href="index (3).html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <button id="theme-toggle" class="btn btn-outline" style="border: none; font-size: 1.2rem; padding: 0.5rem;" aria-label="Toggle Dark Mode">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="auth.html" class="btn btn-primary">Sign In</a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="section" style="padding-top: 15vh; background: linear-gradient(135deg, var(--color-bg-light) 0%, rgba(133,181,153,0.1) 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+        <div class="container animate-fade" style="width: 100%; display: flex; justify-content: center;">
+          
+          <div class="feature-box glass-card" style="max-width: 600px; width: 100%; padding: 4rem 3rem; text-align: center; border-top: 4px solid #ffffff; box-shadow: var(--shadow-xl);">
+            
+            <div style="display: inline-block; padding: 8px 20px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4); border-radius: 30px; color: #ffffff; font-weight: bold; font-size: 0.9rem; margin-bottom: 1.5rem; letter-spacing: 1px;">
+              <i class="fas fa-star" style="margin-right: 5px;"></i> HYGEIA ÉLITE
+            </div>
+            
+            <h1 style="font-size: 2.2rem; color: var(--color-primary); margin-bottom: 0.5rem;">Take it to the next level</h1>
+            <p style="color: var(--color-text-muted); margin-bottom: 3rem; font-size: 1.05rem;">Unlock your body's full potential with our exclusive professional tools.</p>
+            
+            <!-- Marketing Benefits -->
+            <div style="margin-bottom: 3rem;">
+              <div class="benefit-row">
+                <div class="benefit-icon"><i class="fas fa-camera"></i></div>
+                <div class="benefit-text">
+                  <h4>Unlimited AI Analysis</h4>
+                  <p>Stop counting calories. Take a photo of your meals, our Deep Learning does the rest.</p>
+                </div>
+              </div>
+              <div class="benefit-row">
+                <div class="benefit-icon"><i class="fas fa-video"></i></div>
+                <div class="benefit-text">
+                  <h4>Private Zoom Consultations</h4>
+                  <p>Priority access to our network of nutritionists, with absolutely no additional session fees.</p>
+                </div>
+              </div>
+              <div class="benefit-row">
+                <div class="benefit-icon"><i class="fas fa-shield-alt"></i></div>
+                <div class="benefit-text">
+                  <h4>Exclusive Premium Badge</h4>
+                  <p>Display your Elite status on your profile and unlock the restricted community.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div style="background: rgba(25,68,89,0.05); padding: 2rem; border-radius: var(--radius-lg); margin-bottom: 2rem; border: 1px solid rgba(25,68,89,0.1);">
+              <div style="font-size: 3.5rem; font-weight: bold; color: var(--color-primary); margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                2€ <span style="font-size: 1.2rem; color: var(--color-text-muted); font-weight: normal;">/mo</span>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--color-secondary); font-weight: bold;"><i class="fas fa-lock"></i> No commitment. Cancel anytime.</p>
+            </div>
+            
+            <button id="pay-btn" class="btn btn-primary" style="width: 100%; padding: 1.2rem; font-size: 1.1rem; background: linear-gradient(135deg, #ffffff, #e0e0e0); color: var(--color-primary); border: none; font-weight: bold; box-shadow: 0 0 15px rgba(255,255,255,0.5);" onclick="handlePayment()">
+              Unlock Premium Access <i class="fas fa-credit-card" style="margin-left: 10px;"></i>
+            </button>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div><div class="footer-logo">Hygeia</div></div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+      function handlePayment() {
+        const btn = document.getElementById('pay-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Traitement Secure & Anonymous...';
+        btn.style.opacity = '0.9';
+        btn.style.pointerEvents = 'none';
+
+        setTimeout(() => {
+          localStorage.setItem('isPremium', 'true');
+          btn.innerHTML = '<i class="fas fa-check"></i> Premium Access Activated';
+          btn.style.background = 'var(--color-secondary)';
+          
+          setTimeout(() => {
+            window.location.href = 'home.html';
+          }, 800);
+        }, 2000);
+      }
+    </script>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

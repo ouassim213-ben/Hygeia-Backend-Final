@@ -1,0 +1,180 @@
+/* ============================================================
+   About.css — Minimalist Medical Journal (Typography Focus)
+   Typography: Playfair Display (Serif) & Georgia (Body)
+   ============================================================ */
+
+.journal-page {
+  background-color: #ffffff;
+  color: #1a1a1a;
+  padding: 120px 5% 80px;
+  min-height: 100vh;
+  font-family: 'Georgia', serif; 
+  line-height: 1.8;
+}
+
+.journal-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  border-top: 1px solid #1a1a1a;
+  padding-top: 3rem;
+}
+
+/* --- Header --- */
+.journal-header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.journal-metadata {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+}
+
+.journal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  color: #0d3b3f;
+  margin: 1.5rem 0;
+  font-weight: 800;
+  letter-spacing: -2px;
+}
+
+.double-line {
+  border-top: 4px double #1a1a1a;
+  width: 100%;
+  margin: 3rem 0;
+}
+
+/* --- 3-Column Typography Grid --- */
+.journal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .journal-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .journal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.journal-column {
+  position: relative;
+}
+
+@media (min-width: 769px) {
+  .journal-column:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -2rem;
+    width: 1px;
+    height: 100%;
+    background: #e2e8f0;
+  }
+}
+
+/* --- Section Headers --- */
+.journal-subheading {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: #0d3b3f;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #1a1a1a;
+  padding-bottom: 0.5rem;
+  text-transform: capitalize;
+}
+
+.journal-text {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  text-align: justify;
+  hyphens: auto;
+  color: #334155;
+}
+
+.keyword-gold {
+  color: #c5a059;
+  font-weight: 700;
+}
+
+/* --- Enhanced Typographic Quote --- */
+.journal-quote-large {
+  grid-column: 1 / -1; /* Spans full width in grid */
+  text-align: center;
+  padding: 6rem 10%;
+  margin: 4rem 0;
+  background: #fcfcfc;
+  border-top: 1px solid #f1f1f1;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.journal-quote-large p {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.4;
+  color: #c5a059;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.quote-author {
+  display: block;
+  margin-top: 2rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #0d3b3f;
+}
+
+/* --- Simple Dividers --- */
+.text-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 3rem 0;
+  color: #cbd5e1;
+}
+
+.text-divider::before,
+.text-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.text-divider:not(:empty)::before {
+  margin-right: 1.5rem;
+}
+
+.text-divider:not(:empty)::after {
+  margin-left: 1.5rem;
+}
+
+.journal-footer {
+  margin-top: 8rem;
+  padding-top: 4rem;
+  border-top: 1px solid #1a1a1a;
+  text-align: center;
+  font-size: 0.85rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #94a3b8;
+  text-transform: uppercase;
+}

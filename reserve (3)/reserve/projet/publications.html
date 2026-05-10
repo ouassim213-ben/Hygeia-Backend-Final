@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="./theme.js"></script>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hygeia | Publications</title>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./style (2).css">
+    <style>
+      /* Mobile App Bottom Nav Styles */
+      .mobile-bottom-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(25, 68, 89, 0.95); backdrop-filter: blur(20px); z-index: 2000; border-top: 1px solid rgba(255,255,255,0.08); }
+      .mobile-nav-items { display: flex; justify-content: space-around; padding: 0.8rem 0; }
+      .mobile-nav-item { color: rgba(255,255,255,0.6); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.75rem; transition: var(--transition-fast); text-decoration: none;}
+      .mobile-nav-item.active, .mobile-nav-item:hover { color: var(--color-highlight); }
+      
+      /* 3-Column Social Layout */
+      .social-layout { display: grid; grid-template-columns: 280px minmax(auto, 600px) 280px; gap: 1.5rem; max-width: 1200px; margin: 0 auto; padding: 0 1rem; justify-content: center; align-items: start; }
+      
+      @media (max-width: 1100px) { .social-layout { grid-template-columns: 250px minmax(auto, 600px); } .right-sidebar { display: none; } }
+      @media (max-width: 768px) { .social-layout { grid-template-columns: 1fr; } .left-sidebar { display: none; } .mobile-bottom-nav { display: block; } body { padding-bottom: 70px; } }
+
+      /* White Glassmorphism Global Class */
+      .glass-panel { 
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.8) !important; 
+        border-radius: var(--radius-lg);
+        padding: 1.25rem; 
+        margin-bottom: 1.5rem; 
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        color: #194459;
+      }
+      
+      /* Sidebar Utilities */
+      .mini-profile-cover { height: 75px; background: linear-gradient(135deg, var(--color-secondary), var(--color-primary)); border-radius: var(--radius-lg) var(--radius-lg) 0 0; margin: -1.25rem -1.25rem 0 -1.25rem; }
+      .mini-avatar { width: 70px; height: 70px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin: -35px auto 10px; background-size: cover; background-position: center; }
+      .mini-name { text-align: center; font-size: 1.15rem; font-weight: bold; margin-bottom: 2px; }
+      .mini-headline { text-align: center; font-size: 0.85rem; color: #6b7280; margin-bottom: 15px; }
+      .stat-row { display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid rgba(0,0,0,0.05); font-size: 0.9rem; }
+      .stat-row strong { color: #85B599; }
+      
+      .trending-item { margin-bottom: 12px; }
+      .trending-item a { text-decoration: none; color: #194459; font-weight: bold; font-size: 0.95rem; display: block; margin-bottom: 2px; transition: color 0.2s; }
+      .trending-item a:hover { color: #85B599; }
+      .trending-item span { font-size: 0.8rem; color: #6b7280; }
+
+      /* Post Area & Feed */
+      .create-post { transition: box-shadow 0.3s; }
+      .create-post:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.12); }
+      .post-actions-composer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 12px; border-top: 1px solid rgba(0,0,0,0.05); }
+      .composer-btn { display: flex; align-items: center; gap: 8px; color: #4b5563; font-weight: 600; font-size: 0.95rem; padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: background 0.2s; border: none; background: transparent; }
+      .composer-btn:hover { background: rgba(0,0,0,0.05); }
+
+      .post-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+      .post-card:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,0,0,0.12); border-color: rgba(133,181,153,0.3) !important; }
+      .post-image { border-radius: 12px; width: 100%; max-height: 500px; object-fit: cover; margin-top: 12px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block; border: 1px solid rgba(0,0,0,0.05); }
+      .video-thumbnail { position: relative; cursor: pointer; }
+      .video-thumbnail::after { content: '\\f144'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; color: rgba(255,255,255,0.9); text-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.2s; }
+      .video-thumbnail:hover::after { transform: translate(-50%, -50%) scale(1.1); color: white; }
+
+      .action-icon { display: flex; align-items: center; gap: 8px; color: #4b5563; cursor: pointer; transition: all 0.2s; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.95rem; }
+      .action-icon:hover { background: rgba(0,0,0,0.05); color: #194459; }
+      .action-icon.like:hover { background: rgba(239,68,68,0.1); color: #ef4444; }
+
+      .expert-badge { display: inline-flex; align-items: center; gap: 4px; color: #2D8CFF; font-size: 0.85rem; font-weight: bold; background: rgba(45, 140, 255, 0.1); padding: 2px 8px; border-radius: 12px; margin-left: 6px; }
+
+      .list-content { padding-left: 20px; margin: 10px 0; color: #374151; font-size: 1.05rem; line-height: 1.6; }
+      .list-content li { margin-bottom: 6px; }
+    </style>
+    <script>if(!localStorage.getItem('isPremium')){ window.location.href='auth.html'; }</script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+      <a href="home.html" class="nav-brand">Hygeia</a>
+      <div class="nav-links">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="publications.html" class="nav-link" style="color: var(--color-highlight);">Publications</a>
+        <a href="ai-tracker.html" class="nav-link">AI Tracker</a>
+        <a href="appointments.html" class="nav-link">Appointments</a>
+        <button id="theme-toggle" class="btn btn-outline" style="border: none; font-size: 1.2rem; padding: 0.5rem;" aria-label="Toggle Dark Mode">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="profile.html" id="nav-profile-icon" style="margin-left:14px; color:var(--theme-text,white); display:flex; align-items:center; transition:all 0.2s;" title="My Profile" onmouseover="this.style.color='#85B599'" onmouseout="this.style.color=''">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+        <a href="#" onclick="logout(); return false;" id="nav-logout-icon" style="margin-left:10px; color:#ef4444; display:flex; align-items:center; transition:all 0.2s;" title="Logout" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#ef4444'">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="section" style="padding-top: 120px; background-color: var(--color-bg-light); min-height: 100vh;">
+        <div class="animate-fade p-0">
+
+          <div class="social-layout">
+            
+            <!-- Left Sidebar: Mini Profile -->
+            <aside class="left-sidebar">
+              <div class="glass-panel" style="padding: 1.25rem;">
+                <div class="mini-profile-cover"></div>
+                <div class="mini-avatar" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300');"></div>
+                <h3 class="mini-name">Jane Doe</h3>
+                <p class="mini-headline">Health & Wellness Enthusiast</p>
+                
+                <div style="margin-top: 20px;">
+                  <div class="stat-row">
+                    <span>Health Level</span>
+                    <strong>8.5 / 10</strong>
+                  </div>
+                  <div class="stat-row">
+                    <span>Network</span>
+                    <strong>245 links</strong>
+                  </div>
+                  <div class="stat-row">
+                    <span>Target</span>
+                    <strong>Fat Loss</strong>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="glass-panel">
+                <h4 style="font-size: 1rem; margin-bottom: 12px; color: #194459;"><i class="fas fa-bookmark" style="color: #85B599; margin-right: 5px;"></i> Bookmarked</h4>
+                <a href="#" style="display: block; color: #4b5563; text-decoration: none; font-size: 0.9rem; margin-bottom: 8px;"><i class="far fa-file-alt" style="margin-right: 8px;"></i> My Weekly Nutrition Plan</a>
+                <a href="#" style="display: block; color: #4b5563; text-decoration: none; font-size: 0.9rem;"><i class="fas fa-video" style="margin-right: 8px;"></i> Core Workout Video</a>
+              </div>
+            </aside>
+
+            <!-- Center Content: Feed -->
+            <div class="center-feed">
+              
+              <!-- Create Post Composer -->
+              <div class="glass-panel create-post" style="padding: 1.5rem;">
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                  <div style="width: 45px; height: 45px; border-radius: 50%; background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300'); background-size: cover; border: 2px solid white; box-shadow: var(--shadow-sm); flex-shrink: 0;"></div>
+                  <textarea id="new-post-content" placeholder="Start a post..." style="width: 100%; height: 45px; max-height: 120px; border: 1px solid rgba(0,0,0,0.1); border-radius: 25px; background: rgba(0,0,0,0.02); color: #194459; resize: vertical; font-family: var(--font-body); font-size: 1.05rem; outline: none; padding: 12px 20px; transition: border-color 0.2s;" onfocus="this.style.height='80px'" onblur="if(this.value==='') this.style.height='45px'"></textarea>
+                </div>
+                
+                <div id="image-preview-container" style="display: none; margin-top: 15px; position: relative;">
+                  <img id="post-image-preview" src="" style="width: 100%; border-radius: 12px; max-height: 300px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                  <button onclick="removeImage()" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center;"><i class="fas fa-times"></i></button>
+                </div>
+
+                <div class="post-actions-composer">
+                  <div style="display: flex; gap: 5px;">
+                    <button class="composer-btn" onclick="document.getElementById('post-image-upload').click();"><i class="fas fa-image" style="color: #3b82f6; font-size: 1.2rem;"></i> Photo</button>
+                    <button class="composer-btn"><i class="fas fa-video" style="color: #10b981; font-size: 1.2rem;"></i> Video</button>
+                    <button class="composer-btn"><i class="far fa-calendar-alt" style="color: #f59e0b; font-size: 1.2rem;"></i> Event</button>
+                    <button class="composer-btn"><i class="far fa-newspaper" style="color: #ef4444; font-size: 1.2rem;"></i> Article</button>
+                    <input type="file" id="post-image-upload" accept="image/*" style="display: none;" onchange="previewImage(this)">
+                  </div>
+                  
+                  <button class="btn btn-primary" onclick="publishPost()" id="publish-btn" style="padding: 0.5rem 1.5rem; border-radius: 20px; font-weight: bold; background: #85B599; border: none; color: white;">Post</button>
+                </div>
+              </div>
+
+              <div id="posts-feed">
+                
+                <!-- Post 1: User Success Story (Before/After) -->
+                <article class="glass-panel post-card" style="padding: 1.5rem;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                      <div style="width: 50px; height: 50px; border-radius: 50%; background-image: url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200'); background-size: cover; border: 2px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"></div>
+                      <div style="display: flex; flex-direction: column;">
+                        <h4 style="margin: 0; color: #194459; font-size: 1.1rem; font-weight: bold;">Marc Dubois</h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: #6b7280;">Fitness Journey • 5 hours ago</p>
+                      </div>
+                    </div>
+                    <i class="fas fa-ellipsis-h" style="color: #9ca3af; cursor: pointer;"></i>
+                  </div>
+                  
+                  <div style="line-height: 1.6; color: #374151; font-size: 1.05rem;">
+                    <p style="margin-bottom: 0.8rem;">Down 5kg thanks to HYGEIA AI tracking! Best $2 I ever spent. Being able to just snap a photo of my meal and instantly see the macros has kept me completely accountable and motivated every single day on the track! Huge thanks to the community here. 🏃‍♂️💨🔥</p>
+                    <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800" class="post-image" alt="Workout progress">
+                    
+                    <div style="display: flex; justify-content: space-between; color: #6b7280; font-size: 0.85rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 8px; margin-top: 12px;">
+                      <span><i class="fas fa-heart" style="color: #ef4444; margin-right: 4px;"></i> 1.2k likes</span>
+                      <span>340 comments • 24 shares</span>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; padding-top: 8px; margin-top: 4px;">
+                      <span class="action-icon like" style="color: #ef4444;" onclick="toggleLike(this)"><i class="fas fa-heart"></i> Like</span>
+                      <span class="action-icon" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</span>
+                      <span class="action-icon"><i class="fas fa-share"></i> Share</span>
+                      <span class="action-icon"><i class="far fa-paper-plane"></i> Send</span>
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Post 2: Expert Advice -->
+                <article class="glass-panel post-card" style="padding: 1.5rem;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                      <div style="width: 50px; height: 50px; border-radius: 50%; background-image: url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200'); background-size: cover; border: 2px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"></div>
+                      <div style="display: flex; flex-direction: column;">
+                        <h4 style="margin: 0; color: #194459; font-size: 1.1rem; font-weight: bold; display: flex; align-items: center;">Dr. Sarah Jenkins <span class="expert-badge"><i class="fas fa-check-circle"></i> Nutrition App.</span></h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: #6b7280;">Clinical Dietitian • 12 hours ago</p>
+                      </div>
+                    </div>
+                    <i class="fas fa-ellipsis-h" style="color: #9ca3af; cursor: pointer;"></i>
+                  </div>
+                  
+                  <div style="line-height: 1.6; color: #374151; font-size: 1.05rem;">
+                    <p style="margin-bottom: 0.8rem;">Consistency is the key to metabolic health! Many patients ask me for a reliable base. Here is a simple, highly effective Weekly Meal Plan to stabilize your energy levels:</p>
+                    
+                    <ul class="list-content">
+                      <li><strong>Monday:</strong> Grilled salmon, quinoa, and steamed asparagus (Omega-3 focus).</li>
+                      <li><strong>Tuesday:</strong> Free-range chicken breast, sweet potato, and spinach.</li>
+                      <li><strong>Wednesday:</strong> Lentil salad with feta, walnuts, and olive oil (Vegetarian balance).</li>
+                      <li><strong>Thursday:</strong> Lean turkey stir-fry with bell peppers and basmati rice.</li>
+                    </ul>
+
+                    <p style="margin-top: 1rem; margin-bottom: 1rem;">Remember: always pair your carbs with a solid protein source to prevent insulin spikes! 🥑🥚</p>
+
+                    <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800" class="post-image" alt="Nutrition Plan">
+                    
+                    <div style="display: flex; justify-content: space-between; color: #6b7280; font-size: 0.85rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 8px; margin-top: 12px;">
+                      <span><i class="fas fa-thumbs-up" style="color: #3b82f6; margin-right: 4px;"></i><i class="fas fa-heart" style="color: #ef4444; margin-right: 4px;"></i> 850 likes</span>
+                      <span>115 comments • 89 shares</span>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; padding-top: 8px; margin-top: 4px;">
+                      <span class="action-icon like" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</span>
+                      <span class="action-icon" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</span>
+                      <span class="action-icon"><i class="fas fa-share"></i> Share</span>
+                      <span class="action-icon"><i class="far fa-paper-plane"></i> Send</span>
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Post 3: Video Placeholder -->
+                <article class="glass-panel post-card" style="padding: 1.5rem;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                      <div style="width: 50px; height: 50px; border-radius: 50%; background-image: url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200'); background-size: cover; border: 2px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"></div>
+                      <div style="display: flex; flex-direction: column;">
+                        <h4 style="margin: 0; color: #194459; font-size: 1.1rem; font-weight: bold;">Elena Rossi</h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: #6b7280;">Fitness Trainer • 1 day ago</p>
+                      </div>
+                    </div>
+                    <i class="fas fa-ellipsis-h" style="color: #9ca3af; cursor: pointer;"></i>
+                  </div>
+                  
+                  <div style="line-height: 1.6; color: #374151; font-size: 1.05rem;">
+                    <p style="margin-bottom: 0.8rem;">Just uploaded a new 15-minute Core Burner routine. No equipment needed! Perfect to do right before your morning shower to jumpstart your metabolism. Click play below! 💪✨</p>
+                    
+                    <div class="video-thumbnail">
+                      <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800" class="post-image" alt="Workout Video" style="filter: brightness(0.85);">
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; color: #6b7280; font-size: 0.85rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 8px; margin-top: 12px;">
+                      <span><i class="fas fa-heart" style="color: #ef4444; margin-right: 4px;"></i><i class="fas fa-hands-clapping" style="color: #10b981; margin-right: 4px;"></i> 3.4k likes</span>
+                      <span>425 comments • 1.2k shares</span>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; padding-top: 8px; margin-top: 4px;">
+                      <span class="action-icon like" style="color: #ef4444;" onclick="toggleLike(this)"><i class="fas fa-heart"></i> Like</span>
+                      <span class="action-icon" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</span>
+                      <span class="action-icon"><i class="fas fa-share"></i> Share</span>
+                      <span class="action-icon"><i class="far fa-paper-plane"></i> Send</span>
+                    </div>
+                  </div>
+                </article>
+
+              </div>
+            </div>
+
+            <!-- Right Sidebar: Trending -->
+            <aside class="right-sidebar">
+              <div class="glass-panel">
+                <h4 style="font-size: 1.1rem; margin-bottom: 15px; color: #194459;">Trending Topics</h4>
+                <div class="trending-item">
+                  <a href="#">#HealthyLiving</a>
+                  <span>34.5k posts</span>
+                </div>
+                <div class="trending-item">
+                  <a href="#">#AIAnalysis</a>
+                  <span>12.2k posts</span>
+                </div>
+                <div class="trending-item">
+                  <a href="#">#ZoomConsultations</a>
+                  <span>8.4k posts</span>
+                </div>
+                <div class="trending-item" style="margin-bottom: 0;">
+                  <a href="#">#FastingProtocol</a>
+                  <span>5.1k posts</span>
+                </div>
+              </div>
+
+              <div class="glass-panel">
+                <h4 style="font-size: 1.1rem; margin-bottom: 15px; color: #194459;">Suggested Experts</h4>
+                
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                  <div style="width: 40px; height: 40px; border-radius: 50%; background-image: url('https://images.unsplash.com/photo-1537368910025-702850356d5a?w=100'); background-size: cover; border: 2px solid white;"></div>
+                  <div style="flex-grow: 1;">
+                    <h5 style="margin:0; font-size: 0.95rem; color:#194459;">Dr. Robert <i class="fas fa-check-circle" style="color:#2D8CFF; font-size:0.8rem;"></i></h5>
+                    <p style="margin:0; font-size: 0.8rem; color:#6b7280;">General Medicine</p>
+                  </div>
+                  <button style="background: none; border: 1px solid #85B599; color: #85B599; border-radius: 20px; padding: 4px 10px; font-size: 0.8rem; font-weight: bold; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#85B599'; this.style.color='white';" onmouseout="this.style.background='none'; this.style.color='#85B599';">Follow</button>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 40px; height: 40px; border-radius: 50%; background-image: url('https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100'); background-size: cover; border: 2px solid white;"></div>
+                  <div style="flex-grow: 1;">
+                    <h5 style="margin:0; font-size: 0.95rem; color:#194459;">Alice M.</h5>
+                    <p style="margin:0; font-size: 0.8rem; color:#6b7280;">Elite Fitness Coach</p>
+                  </div>
+                  <button style="background: none; border: 1px solid #85B599; color: #85B599; border-radius: 20px; padding: 4px 10px; font-size: 0.8rem; font-weight: bold; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#85B599'; this.style.color='white';" onmouseout="this.style.background='none'; this.style.color='#85B599';">Follow</button>
+                </div>
+              </div>
+            </aside>
+
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="mobile-bottom-nav">
+      <div class="mobile-nav-items">
+        <a href="home.html" class="mobile-nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="publications.html" class="mobile-nav-item active"><i class="far fa-newspaper"></i><span>Publications</span></a>
+        <a href="ai-tracker.html" class="mobile-nav-item"><i class="fas fa-camera"></i><span>Tracker</span></a>
+        <a href="appointments.html" class="mobile-nav-item"><i class="far fa-calendar-alt"></i><span>Appointments</span></a>
+        <a href="profile.html" class="mobile-nav-item"><i class="far fa-user-circle"></i><span>Profile</span></a>
+      </div>
+    </nav>
+
+    <script src="app.js"></script>
+    <script>
+      let currentImageBase64 = null;
+
+      function previewImage(input) {
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            currentImageBase64 = e.target.result;
+            document.getElementById('post-image-preview').src = currentImageBase64;
+            document.getElementById('image-preview-container').style.display = 'block';
+          }
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+
+      function removeImage() {
+        currentImageBase64 = null;
+        document.getElementById('post-image-preview').src = '';
+        document.getElementById('image-preview-container').style.display = 'none';
+        document.getElementById('post-image-upload').value = '';
+      }
+
+      function publishPost() {
+        const textarea = document.getElementById('new-post-content');
+        const content = textarea.value.trim();
+        const btn = document.getElementById('publish-btn');
+        if (!content && !currentImageBase64) return;
+        
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting...';
+        setTimeout(() => {
+          const feed = document.getElementById('posts-feed');
+          const newPost = document.createElement('article');
+          newPost.className = 'glass-panel post-card';
+          newPost.style.padding = '1.5rem';
+          
+          let imageHtml = currentImageBase64 ? `<img src="${currentImageBase64}" class="post-image" alt="Uploaded photo">` : '';
+
+          newPost.innerHTML = `
+            <div class="post-author" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+              <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 50px; height: 50px; border-radius: 50%; background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300'); background-size: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 2px solid white;"></div>
+                <div class="author-info" style="display: flex; flex-direction: column;">
+                  <h4 style="margin: 0; color: #194459; font-size: 1.1rem; font-weight: bold;">Jane Doe</h4>
+                  <p style="margin: 0; font-size: 0.85rem; color: #6b7280;">Just now</p>
+                </div>
+              </div>
+              <i class="fas fa-ellipsis-h" style="color: #9ca3af; cursor: pointer;"></i>
+            </div>
+            
+            <div class="post-content" style="line-height: 1.6; color: #374151; font-size: 1.05rem;">
+              <p style="margin-bottom: ${currentImageBase64 ? '0.8rem' : '0'};">${content}</p>
+              ${imageHtml}
+              
+              <div style="display: flex; justify-content: space-between; color: #6b7280; font-size: 0.85rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 8px; margin-top: 12px;">
+                <span><i class="fas fa-heart" style="color: #ef4444; margin-right: 4px;"></i> 0 likes</span>
+                <span>0 comments</span>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; padding-top: 8px; margin-top: 4px;">
+                <span class="action-icon like" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</span>
+                <span class="action-icon" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</span>
+                <span class="action-icon"><i class="fas fa-share"></i> Share</span>
+                <span class="action-icon"><i class="far fa-paper-plane"></i> Send</span>
+              </div>
+            </div>
+          `;
+          
+          newPost.style.animation = 'fade-in-up 0.5s ease-out';
+          feed.insertBefore(newPost, feed.firstChild);
+          
+          textarea.value = '';
+          removeImage();
+          btn.innerHTML = 'Post';
+        }, 600);
+      }
+
+      function toggleLike(btn) {
+        const icon = btn.querySelector('i');
+        const countSpan = btn.closest('.post-content').querySelector('.like-count') || btn.nextElementSibling; 
+        if (icon.classList.contains('far')) {
+          icon.classList.replace('far', 'fas');
+          btn.style.color = '#ef4444';
+        } else {
+          icon.classList.replace('fas', 'far');
+          btn.style.color = '#4b5563';
+        }
+      }
+    </script>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

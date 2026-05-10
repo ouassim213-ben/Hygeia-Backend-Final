@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="./theme.js"></script>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hygeia | Nos Experts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="stylesheet" href="./style (2).css">
+   <style>
+     .mobile-bottom-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(25, 68, 89, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 -4px 20px rgba(0,0,0,0.15); z-index: 2000; border-top: 1px solid rgba(255,255,255,0.08); }
+     .mobile-nav-items { display: flex; justify-content: space-around; padding: 0.8rem 0; }
+     .mobile-nav-item { color: rgba(255,255,255,0.6); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.75rem; transition: var(--transition-fast); }
+     .mobile-nav-item i { font-size: 1.3rem; }
+     .mobile-nav-item.active, .mobile-nav-item:hover { color: var(--color-highlight); }
+     @media (max-width: 768px) { .mobile-bottom-nav { display: block; } body { padding-bottom: 70px; } }
+
+     /* Doctors Grid Cards */
+     .doc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem; }
+     .doc-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-lg); padding: 2rem; text-align: center; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; }
+     .doc-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); border-color: rgba(133,181,153,0.3); }
+     .doc-pic { width: 120px; height: 120px; border-radius: 50%; background-size: cover; background-position: center; border: 4px solid var(--color-secondary); margin-bottom: 1rem; box-shadow: var(--shadow-md); }
+     .doc-name { font-size: 1.3rem; color: #000000; font-weight: bold; margin-bottom: 5px; }
+     .doc-spec { color: var(--color-highlight); font-size: 0.9rem; font-weight: 500; margin-bottom: 15px; }
+     
+     /* Filters */
+     .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 2rem; }
+     .filter-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--color-border); padding: 8px 16px; border-radius: 20px; color: var(--color-text-dark); cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
+     .filter-btn.active, .filter-btn:hover { background: var(--color-secondary); color: white; border-color: var(--color-secondary); }
+     /* Steps */
+     .step-card { padding: 2.5rem 1.5rem !important; border-radius: var(--radius-lg); position: relative; transition: all 0.3s ease !important; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03) !important; backdrop-filter: blur(10px); }
+     .step-card:hover { transform: translateY(-5px); box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); border-color: rgba(133,181,153,0.4); }
+   </style>
+  
+    <script>if(!localStorage.getItem('isPremium')){ window.location.href='auth.html'; }</script>
+  </head>
+  <body>
+    <!-- Navbar_Private -->
+        <nav class="navbar" id="navbar">
+      <a href="home.html" class="nav-brand">Hygeia</a>
+      <div class="nav-links">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="publications.html" class="nav-link">Publications</a>
+        <a href="ai-tracker.html" class="nav-link">AI Tracker</a>
+        <a href="appointments.html" class="nav-link" style="color: var(--color-highlight);">Appointments</a>
+        <button id="theme-toggle" class="btn btn-outline" style="border: none; font-size: 1.2rem; padding: 0.5rem;" aria-label="Toggle Dark Mode">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="profile.html" id="nav-profile-icon" style="margin-left:14px; color:var(--theme-text,white); display:flex; align-items:center; transition:all 0.2s;" title="My Profile" onmouseover="this.style.color='#85B599'" onmouseout="this.style.color=''">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+        <a href="#" onclick="logout(); return false;" id="nav-logout-icon" style="margin-left:10px; color:#ef4444; display:flex; align-items:center; transition:all 0.2s;" title="Logout" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#ef4444'">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="section" style="padding-top: 120px; background-color: var(--color-bg-light); min-height: 100vh;">
+        <div class="container animate-fade">
+          <div class="section-header" style="text-align: center; margin-bottom: 4rem;">
+            <h1 class="section-title" style="justify-content: center; margin-bottom: 10px; font-size: 2.5rem;">
+              Consult our specialists
+            </h1>
+            <p style="font-size: 1.1rem; color: var(--color-text-dark); margin-bottom: 3rem;">All our consultations are held via <strong>Zoom Call</strong> for your ultimate convenience.</p>
+            
+            <!-- 3 Steps Process Layout -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; text-align: center;">
+              
+              <div class="glass-card step-card" onclick="document.getElementById('docs-list').scrollIntoView({behavior: 'smooth'})" style="cursor: pointer;" title="Voir les médecins">
+                <div style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 40px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000000; font-size: 1.2rem; font-weight: bold; border: 4px solid var(--color-bg-light); box-shadow: var(--shadow-sm);">1</div>
+                <i class="fas fa-user-md" style="font-size: 3rem; margin-bottom: 15px; color: var(--color-secondary);"></i>
+                <h4 style="color: #000000; font-size: 1.2rem;">Select your specialist</h4>
+              </div>
+
+              <div class="glass-card step-card">
+                <div style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 40px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000000; font-size: 1.2rem; font-weight: bold; border: 4px solid var(--color-bg-light); box-shadow: var(--shadow-sm);">2</div>
+                <i class="far fa-calendar-check" style="font-size: 3rem; margin-bottom: 15px; color: var(--color-secondary);"></i>
+                <h4 style="color: #000000; font-size: 1.2rem;">Choose your time slot</h4>
+              </div>
+
+              <div class="glass-card step-card">
+                <div style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 40px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000000; font-size: 1.2rem; font-weight: bold; border: 4px solid var(--color-bg-light); box-shadow: var(--shadow-sm);">3</div>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 15px; font-size: 2.2rem; color: var(--color-secondary);">
+                  <i class="fab fa-cc-visa"></i>
+                  <i class="fab fa-cc-mastercard"></i>
+                  <i class="fas fa-video" style="color: #2D8CFF; font-size: 2rem; margin-left: 5px;" title="Zoom"></i>
+                </div>
+                <h4 style="color: #000000; font-size: 1.2rem;">Secure Payment & Zoom Link</h4>
+              </div>
+
+            </div>
+          </div>
+          
+          <!-- Anchor for smooth scrolling -->
+          <div id="docs-list"></div>
+
+          <div class="filters">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Nutritionniste</button>
+            <button class="filter-btn">Dietitian</button>
+            <button class="filter-btn">Fitness Coach</button>
+            <button class="filter-btn" style="margin-left: auto; background: transparent; border: none; color: var(--color-secondary);"><i class="fas fa-sliders-h"></i> More filters</button>
+          </div>
+
+          <!-- Doctor Grid -->
+          <div class="doc-grid">
+            
+            <article class="doc-card" onclick="window.location.href='doctor-profile.html'" style="cursor: pointer;">
+              <div class="doc-pic" style="background-image: url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=300');"></div>
+              <h3 class="doc-name">Dr. Sarah Jenkins</h3>
+              <p class="doc-spec">Nutritionist Doctor</p>
+              <div style="display: flex; gap: 5px; color: #ffffff; font-size: 0.85rem; margin-bottom: 1.5rem;">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> <span style="color: var(--color-text-muted);">(128 avis)</span>
+              </div>
+              <button class="btn btn-primary" style="width: 100%; border-radius: 20px; font-weight: bold; padding: 0.6rem;">View Profile <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 0.8rem;"></i></button>
+            </article>
+
+            <article class="doc-card" onclick="window.location.href='doctor-profile.html'" style="cursor: pointer;">
+              <div class="doc-pic" style="background-image: url('https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=300');"></div>
+              <h3 class="doc-name">Ahmed Ali</h3>
+              <p class="doc-spec">Fitness Coach Élite</p>
+              <div style="display: flex; gap: 5px; color: #ffffff; font-size: 0.85rem; margin-bottom: 1.5rem;">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> <span style="color: var(--color-text-muted);">(95 avis)</span>
+              </div>
+              <button class="btn btn-outline" style="width: 100%; border-radius: 20px; font-weight: bold; padding: 0.6rem; border-color: var(--color-secondary); color: #000000;">View Profile <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 0.8rem;"></i></button>
+            </article>
+            
+            <article class="doc-card" onclick="window.location.href='doctor-profile.html'" style="cursor: pointer;">
+              <div class="doc-pic" style="background-image: url('https://images.unsplash.com/photo-1594824436951-6f1618641b96?w=300');"></div>
+              <h3 class="doc-name">Dr. Emma Croft</h3>
+              <p class="doc-spec">Dietitianne Clinique</p>
+              <div style="display: flex; gap: 5px; color: #ffffff; font-size: 0.85rem; margin-bottom: 1.5rem;">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i> <span style="color: var(--color-text-muted);">(42 avis)</span>
+              </div>
+              <button class="btn btn-outline" style="width: 100%; border-radius: 20px; font-weight: bold; padding: 0.6rem; border-color: var(--color-secondary); color: #000000;">View Profile <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 0.8rem;"></i></button>
+            </article>
+
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div><div class="footer-logo">Hygeia</div></div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="mobile-bottom-nav">
+      <div class="mobile-nav-items">
+        <a href="dashboard.html" class="mobile-nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="ai-tracker.html" class="mobile-nav-item"><i class="fas fa-camera"></i><span>Tracker</span></a>
+        <a href="appointments.html" class="mobile-nav-item active"><i class="far fa-calendar-alt"></i><span>Calendar</span></a>
+        <a href="profile.html" class="mobile-nav-item"><i class="far fa-user-circle"></i><span>Profile</span></a>
+      </div>
+    </nav>
+
+    <script src="app.js"></script>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hygeia | Doctor Schedule</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="stylesheet" href="./style (2).css">
+   <style>
+     .mobile-bottom-nav {
+       display: none; position: fixed; bottom: 0; left: 0; width: 100%;
+       background: rgba(25, 68, 89, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+       box-shadow: 0 -4px 20px rgba(0,0,0,0.15); z-index: 2000; border-top: 1px solid rgba(255,255,255,0.08);
+     }
+     .mobile-nav-items { display: flex; justify-content: space-around; padding: 0.8rem 0; }
+     .mobile-nav-item { color: rgba(255,255,255,0.6); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.75rem; transition: var(--transition-fast); }
+     .mobile-nav-item i { font-size: 1.3rem; }
+     .mobile-nav-item.active, .mobile-nav-item:hover { color: var(--color-highlight); }
+     @media (max-width: 768px) { .mobile-bottom-nav { display: block; } body { padding-bottom: 70px; } }
+
+     /* Calendar Interactive */
+     .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 1rem; text-align: center; }
+     .cal-day-header { font-weight: bold; color: var(--color-text-muted); font-size: 0.9rem; padding-bottom: 10px; }
+     .cal-day { padding: 10px 0; border-radius: var(--radius-sm); border: 1px solid var(--color-border); cursor: pointer; transition: var(--transition-fast); background: rgba(255,255,255,0.4); }
+     .cal-day:hover:not(.disabled) { background: rgba(133,181,153,0.2); border-color: var(--color-secondary); transform: scale(1.05); }
+     .cal-day.disabled { opacity: 0.4; cursor: not-allowed; background: transparent; border: none; }
+     .cal-day.selected { background: linear-gradient(135deg, var(--color-secondary), var(--color-accent)); color: white; border-color: transparent; box-shadow: var(--shadow-sm); }
+     
+     .time-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 1.5rem; display: none; }
+     .time-slot { padding: 10px; text-align: center; border-radius: var(--radius-full); border: 1px solid var(--color-secondary); color: var(--color-primary); cursor: pointer; transition: var(--transition-fast); font-weight: 500; font-size: 0.9rem; }
+     .time-slot:hover { background: var(--color-secondary); color: white; transform: translateY(-2px); box-shadow: var(--shadow-xs); }
+     .time-slot.selected { background: var(--color-primary); color: white; border-color: var(--color-primary); }
+   </style>
+  </head>
+  <body>
+    <!-- Navbar_Private -->
+    <nav class="navbar" id="navbar">
+      <a href="dashboard.html" class="nav-brand">Hygeia</a>
+      <div class="nav-links">
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="ai-tracker.html" class="nav-link">AI Tracker</a>
+        <a href="appointments.html" class="nav-link" style="color: var(--color-highlight);">Appointments</a>
+        <button id="theme-toggle" class="btn btn-outline" style="border: none; font-size: 1.2rem; padding: 0.5rem;">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="profile.html" class="profile-icon" style="margin-left: 10px; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--color-secondary), var(--color-accent)); color: white; text-decoration: none; box-shadow: var(--shadow-sm);"><i class="fas fa-user"></i></a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="section" style="padding-top: 120px; background-color: var(--color-bg-light); min-height: 100vh;">
+        <div class="container animate-fade">
+          
+          <a href="appointments.html" style="color: var(--color-primary); margin-bottom: 2rem; display: inline-flex; align-items: center; gap: 8px; font-weight: bold;">
+            <i class="fas fa-arrow-left"></i> Back to Experts
+          </a>
+
+          <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: start;" class="doc-layout">
+            
+            <!-- Doctor Details Sidebar -->
+            <div class="glass-card" style="padding: 2.5rem 2rem; text-align: center; border: 1px solid var(--glass-border);">
+              <div class="specialist-img" style="background: url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200') center/cover; width: 140px; height: 140px; border-radius: 50%; margin: 0 auto 1.5rem; border: 4px solid var(--color-secondary); box-shadow: var(--shadow-glow-secondary);"></div>
+              <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--color-primary);">Dr. Sarah Jenkins</h2>
+              <p style="color: var(--color-highlight); font-weight: bold; margin-bottom: 1rem;">Hormonal Balance Specialist</p>
+              <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 1.5rem; color: var(--color-highlight); font-size: 1.1rem;">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+              </div>
+              <p style="font-size: 0.95rem; color: var(--color-text-muted); line-height: 1.6; text-align: left; margin-bottom: 2rem;">
+                Dr. Jenkins combines traditional endocrinology with modern holistic nutrition. She excels in helping patients sync their diet with their natural hormone cycles.
+              </p>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                <span style="background: rgba(133,181,153,0.15); color: var(--color-secondary); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">PCOS</span>
+                <span style="background: rgba(133,181,153,0.15); color: var(--color-secondary); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">Cortisol</span>
+                <span style="background: rgba(133,181,153,0.15); color: var(--color-secondary); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">Metabolism</span>
+              </div>
+            </div>
+
+            <!-- Calendar Section -->
+            <div class="glass-card" style="padding: 2.5rem; border: 1px solid var(--glass-border);">
+              <h3 style="font-size: 1.6rem; color: var(--color-primary); margin-bottom: 0.5rem;">Select a Date</h3>
+              <p style="color: var(--color-text-muted); margin-bottom: 1.5rem;">Timezone: GMT+1 (Paris)</p>
+              
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <button class="btn btn-outline" style="padding: 0.5rem; color: var(--color-primary); border-color: rgba(25,68,89,0.2);"><i class="fas fa-chevron-left"></i></button>
+                <h4 style="font-size: 1.2rem; color: var(--color-primary);">April 2026</h4>
+                <button class="btn btn-outline" style="padding: 0.5rem; color: var(--color-primary); border-color: rgba(25,68,89,0.2);"><i class="fas fa-chevron-right"></i></button>
+              </div>
+
+              <div class="calendar-grid">
+                <div class="cal-day-header">SUN</div><div class="cal-day-header">MON</div><div class="cal-day-header">TUE</div><div class="cal-day-header">WED</div><div class="cal-day-header">THU</div><div class="cal-day-header">FRI</div><div class="cal-day-header">SAT</div>
+                <!-- Row 1 -->
+                <div class="cal-day disabled"></div><div class="cal-day disabled"></div><div class="cal-day disabled"></div><div class="cal-day disabled">1</div><div class="cal-day disabled">2</div><div class="cal-day disabled">3</div><div class="cal-day disabled">4</div>
+                <!-- Row 2 -->
+                <div class="cal-day disabled">5</div><div class="cal-day disabled">6</div><div class="cal-day disabled">7</div><div class="cal-day disabled">8</div><div class="cal-day selectable" onclick="selectDate(this)">9</div><div class="cal-day selectable" onclick="selectDate(this)">10</div><div class="cal-day disabled">11</div>
+                <!-- Row 3 -->
+                <div class="cal-day disabled">12</div><div class="cal-day selectable" onclick="selectDate(this)">13</div><div class="cal-day selectable" onclick="selectDate(this)">14</div><div class="cal-day selectable" onclick="selectDate(this)">15</div><div class="cal-day selectable" onclick="selectDate(this)">16</div><div class="cal-day selectable" onclick="selectDate(this)">17</div><div class="cal-day disabled">18</div>
+              </div>
+
+              <!-- Time Slots (Hidden initially) -->
+              <div id="time-slots-container" style="display: none; margin-top: 2rem; border-top: 1px solid rgba(25,68,89,0.1); padding-top: 2rem;">
+                <h3 style="font-size: 1.3rem; color: var(--color-primary); margin-bottom: 1rem;">Available Times</h3>
+                <div class="time-slots" style="display: grid;">
+                  <div class="time-slot" onclick="selectTime(this)">09:00 AM</div>
+                  <div class="time-slot" onclick="selectTime(this)">10:30 AM</div>
+                  <div class="time-slot" onclick="selectTime(this)">01:00 PM</div>
+                  <div class="time-slot" onclick="selectTime(this)">03:00 PM</div>
+                </div>
+                
+                <button id="confirm-btn" class="btn btn-primary" style="width: 100%; margin-top: 2rem; display: none; padding: 1rem;" onclick="alert('Appointment Confirmed! Check your Dashboard.')">Confirm Appointment <i class="fas fa-check-circle" style="margin-left: 8px;"></i></button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="mobile-bottom-nav">
+      <div class="mobile-nav-items">
+        <a href="dashboard.html" class="mobile-nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="ai-tracker.html" class="mobile-nav-item"><i class="fas fa-camera"></i><span>Tracker</span></a>
+        <a href="appointments.html" class="mobile-nav-item active"><i class="far fa-calendar-alt"></i><span>Calendar</span></a>
+        <a href="profile.html" class="mobile-nav-item"><i class="far fa-user-circle"></i><span>Profile</span></a>
+      </div>
+    </nav>
+
+    <script src="app.js"></script>
+    <script>
+      function selectDate(el) {
+        document.querySelectorAll('.cal-day.selectable').forEach(d => d.classList.remove('selected'));
+        el.classList.add('selected');
+        document.getElementById('time-slots-container').style.display = 'block';
+        document.getElementById('confirm-btn').style.display = 'none';
+        document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
+      }
+      function selectTime(el) {
+        document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
+        el.classList.add('selected');
+        document.getElementById('confirm-btn').style.display = 'block';
+      }
+    </script>
+    <style> /* Responsive fixes for doc-layout */ @media (max-width: 768px) { .doc-layout { grid-template-columns: 1fr !important; } } </style>
+  </body>
+</html>

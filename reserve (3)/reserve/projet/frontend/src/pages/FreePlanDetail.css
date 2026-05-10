@@ -1,0 +1,262 @@
+/* ============================================================
+   FreePlanDetail.css — Public Plan Detail Page
+   ============================================================ */
+
+.fpd-container {
+  background: #ffffff;
+  min-height: 100vh;
+}
+
+/* --- Hero Banner --- */
+.fpd-hero {
+  padding: 10rem 5% 5rem;
+  color: white;
+  text-align: center;
+}
+
+.fpd-hero-inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.fpd-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.95rem;
+  margin-bottom: 2.5rem;
+  transition: color 0.2s ease;
+}
+
+.fpd-back-link:hover {
+  color: white;
+}
+
+.fpd-hero-icon {
+  width: 90px;
+  height: 90px;
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 2rem;
+}
+
+.fpd-badge {
+  display: inline-block;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 6px 18px;
+  border-radius: 99px;
+  margin-bottom: 1.5rem;
+}
+
+.fpd-hero h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  color: white;
+  margin-bottom: 1.2rem;
+  line-height: 1.1;
+}
+
+.fpd-hero p {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* --- Body --- */
+.fpd-body {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 5rem 2rem 4rem;
+}
+
+/* --- Sections --- */
+.fpd-section {
+  margin-bottom: 4.5rem;
+}
+
+.fpd-section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 2.5rem;
+}
+
+.fpd-section-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fpd-section-header h2 {
+  font-family: var(--font-heading);
+  font-size: 1.9rem;
+  color: #021B27;
+  margin: 0;
+}
+
+/* --- Timeline --- */
+.fpd-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-left: 2px solid #e5e7eb;
+  padding-left: 2rem;
+  margin-left: 1rem;
+}
+
+.fpd-timeline-item {
+  position: relative;
+  padding-bottom: 2.5rem;
+}
+
+.fpd-timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.fpd-timeline-dot {
+  position: absolute;
+  left: -2.6rem;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px currentColor;
+}
+
+.fpd-time {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+
+.fpd-timeline-content p {
+  color: #374151;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* --- Ingredients --- */
+.fpd-ingredients-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.fpd-ingredient-chip {
+  padding: 10px 18px;
+  border-radius: 99px;
+  border: 1.5px solid;
+  font-size: 0.95rem;
+  color: #374151;
+  background: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s ease;
+}
+
+.fpd-ingredient-chip:hover {
+  background: #f8fafc;
+}
+
+/* --- Pro Tip --- */
+.fpd-pro-tip {
+  border-left: 4px solid;
+  border-radius: 16px;
+  padding: 2.5rem;
+}
+
+.fpd-pro-tip p {
+  color: #374151;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* --- CTA Block --- */
+.fpd-cta-block {
+  background: linear-gradient(135deg, #021B27 0%, #0a2d3d 100%);
+  border-radius: 32px;
+  padding: 5rem 4rem;
+  text-align: center;
+  color: white;
+  margin-top: 5rem;
+}
+
+.fpd-cta-block h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  color: white;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.fpd-cta-block p {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fpd-cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #88B699;
+  color: white;
+  padding: 1.4rem 3.5rem;
+  border-radius: 16px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(136, 182, 153, 0.4);
+}
+
+.fpd-cta-button:hover {
+  background: #6a9e7e;
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(136, 182, 153, 0.5);
+  color: white;
+}
+
+.fpd-cta-sub {
+  margin-top: 1.5rem;
+  color: rgba(255, 255, 255, 0.45) !important;
+  font-size: 0.9rem !important;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .fpd-body {
+    padding: 3rem 1.5rem 3rem;
+  }
+  .fpd-cta-block {
+    padding: 3rem 2rem;
+  }
+  .fpd-cta-button {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+}
