@@ -27,7 +27,7 @@ export default function Home() {
 
   // إعداد Groq
   const groq = new Groq({ 
-  apiKey: "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", // تأكد بلي هذا هو!
+  apiKey: "", // تأكد بلي هذا هو!
   dangerouslyAllowBrowser: true 
 });
 
